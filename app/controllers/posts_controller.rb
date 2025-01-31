@@ -1,5 +1,10 @@
 class PostsController < ApplicationController
+  
+  def index
+    redirect_to new_post_path
+  end
   def new
+    @posts = Post
     @post = Post.new  # Ensure @post is initialized
   end
 
@@ -15,6 +20,6 @@ class PostsController < ApplicationController
   private
 
   def post_params
-    params.require(:post).permit(:name, :comment)
+    params.require(:post).permit(:title, :content)
   end
 end
