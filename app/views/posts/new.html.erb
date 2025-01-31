@@ -1,4 +1,5 @@
-<div>
+
+ <div>
   <h1 class="ml-5">Post page</h1>
   <%= form_with(model: @post, local: true) do |f| %>
     <div class="field">
@@ -6,9 +7,18 @@
         <%= f.text_field :title, class: 'input' %>
     </div>
     <div class="field">
-        <h2>write your thoughts: </h2>
+        <h2>post your thoughts: </h2>
         <%= f.text_area :content, class: 'textarea' %>
     </div>
     <%= f.submit 'Post your thought', class: 'button is-primary' %>
   <% end %>
-</div>
+</div> 
+
+
+
+<%
+=begin%>
+ <% content_for :page_title, "Create a new post" %>
+<%= render 'form' %> 
+<%
+=end%>

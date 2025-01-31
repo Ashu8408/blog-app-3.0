@@ -1,8 +1,15 @@
-<div>
-    <% @posts.each do |post| %>
-        <div class="post">
-            <h2><%= link_to post.title, post %></h2>
-            <p><%= post.content %></p>
-        </div>
-    <% end %>
+<% content_for :page_title, "Index" %>
+
+<div class="container mx-auto py-8">
+  <% @posts.each do |post| %>
+    <div class="bg-white shadow-lg rounded-lg p-6 mb-6">
+      <h2 class="text-xl font-bold">
+        <%= link_to post.title, post, class: "text-blue-500 hover:underline" %>
+      </h2>
+      <p class="text-gray-700"><%= post.content %></p>
+      <span class="inline-block bg-gray-200 text-gray-700 text-sm px-3 py-1 rounded-full mt-2">
+        <%= post.comments.count %>
+      </span>
+    </div>
+  <% end %>
 </div>

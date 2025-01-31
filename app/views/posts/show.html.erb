@@ -1,10 +1,31 @@
-<% content_for :page_title, @post.title %> <!-- for a header in middle of page --> 
-<div>
-    <div>
-        <h1>title: <%= @post.title %></h1>
-        <h3>content: <%= @post.content %></h1>
+<% content_for :page_title, @post.title %>
+
+<section class="container mx-auto py-8">
+  <div class="bg-white shadow-md rounded-lg p-6">
+    <nav class="flex justify-between items-center border-b pb-4">
+      <h2 class="text-lg font-bold">Actions</h2>
+      <div class="flex gap-4">
+        <%= link_to "Edit", edit_post_path(@post), class:"bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700" %>
+        <%#= link_to "Delete", post_path(@post), method: :delete, data: { confirm: "Are you sure?" }, class:"bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700" %>
+        <%= button_to 'Delete', post_path(@post), 
+              method: :delete, 
+              class: "bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700", 
+              data: { confirm: 'Are you sure?' } %>
+      </div>
+    </nav>
+
+    <div class="mt-4 text-gray-700">
+      <%= @post.content %>
     </div>
-    <div>
-            
-    </div>
-</div>
+  </div>
+</section>
+
+<section class="container mx-auto py-8">
+  <h2 class="text-xl font-bold mb-4"><%= @post.comments.count %> Comments</h2>
+  <%= render @post.comments %>
+  
+  <div class="mt-8 bg-gray-100 p-6 rounded-lg">
+    <h3 class="text-lg font-bold mb-4">Leave a reply</h3>
+    <%= render 'comments/form' %>
+  </div>
+</section>
