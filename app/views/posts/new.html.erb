@@ -1,0 +1,19 @@
+<h1>Post page</h1>
+
+<div>
+  <%= form_with(model: @post, local: true) do |f| %>
+    <div class="field">
+      <div class="control">
+        <%= f.label :name, class: 'label' %>
+        <%= f.text_field :name, class: 'input' %>
+      </div>
+    </div>
+    <div class="field">
+      <div class="control">
+        <%= f.label :comment, class: 'label' %>
+        <%= f.text_area :comment, class: 'textarea' %>
+      </div>
+    </div>
+    <%= f.submit 'Leave a reply', class: 'button is-primary' %>
+  <% end %>
+</div>
