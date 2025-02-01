@@ -1,0 +1,12 @@
+<% if !comment.is_deleted %>
+  <div class="bg-white shadow-md rounded-lg p-4 mb-4">
+    <div class="flex justify-between items-center">
+      <div>
+        <p class="text-lg font-semibold">
+          <%= comment.name %></p>
+        <p class="text-gray-700"><%= comment.comment %></p>
+      </div>
+      <%= button_to 'Delete', [comment.post, comment], method: :delete, class: "bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700", data: { confirm: 'Are you sure?' } %>
+    </div>
+  </div>
+<% end %>
