@@ -1,14 +1,14 @@
-<div class="container mx-auto p-6 bg-white shadow-md rounded-lg">
+<div class="container mx-auto p-4 shadow-md rounded-lg">
   <%= simple_form_for @post do |f| %>
-    <div class="mb-4">
-      <%= f.input :title, input_html: { class: 'w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500' }, wrapper: false %>
+    <div class="mb-3">
+      <%= f.input :title, label_html: { class: 'font-bold' }, input_html: { class: 'w-full px-2 py-1 border rounded focus:outline-none focus:ring-2' }, wrapper: false %>
     </div>
-    <div class="mb-4">
-      <%= f.input :content, input_html: { class: 'w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500' }, wrapper: false %>
+    <div class="mb-3">
+      <%= f.input :content, label_html: { class: 'font-bold' }, input_html: { class: 'w-full px-2 py-1 border rounded focus:outline-none focus:ring-2' }, wrapper: false %>
     </div>
-    <div>
-      <h5>change in thoughts? Sure 
-      <%= f.button :submit, 'Update post', class: "bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+    <div class="flex items-center gap-5">
+      <h5>Change in thoughts? Sure.</h5>
+      <%= f.button :submit, 'Update post', class: "bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700" %>
     </div>
   <% end %>
 </div>

@@ -65,12 +65,10 @@ group :test do
   gem "faker"
 end
 
-gem "tailwindcss-ruby", "~> 4.0"
-
-gem "tailwindcss-rails", "~> 3.3"
-
-gem 'simple_form'
+gem "simple_form"
 
 gem "cssbundling-rails"
 
 gem "csv"
+
+gem "tailwindcss-rails", "~> 3.3"
