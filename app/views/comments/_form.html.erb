@@ -1,7 +1,11 @@
 <%= simple_form_for([@post, @post.comments.build]) do |f| %>
-  <div class="mb-4">
+  <%
+=begin%>
+ <div class="mb-4">
     <%= f.input :name, input_html: { class: 'w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500' }, wrapper: false %>
-  </div>
+  </div> 
+<%
+=end%>
   <div class="mb-4">
     <%= f.input :comment, input_html: { class: 'w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500' }, wrapper: false %>
   </div>
