@@ -4,7 +4,7 @@
     <nav>
       <div class="flex items-center justify-between">
         <h2 class="text-lg font-bold">Actions</h2>
-        <div class="flex gap-3">
+        <div class="flex mt-5 gap-3">
           <%= link_to "Edit", edit_post_path(@post), class:"bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-700" %>        
           <%= button_to 'Delete', post_path(@post), method: :delete, class: "bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700", data: { confirm: 'Are you sure?' } %>
         </div>
