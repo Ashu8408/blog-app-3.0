@@ -60,7 +60,9 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
-  gem 'rspec-rails'
+  gem "rspec-rails"
+  gem "shoulda-matchers"
+  gem "faker"
 end
 
 gem "tailwindcss-ruby", "~> 4.0"
@@ -70,3 +72,5 @@ gem "tailwindcss-rails", "~> 3.3"
 gem 'simple_form'
 
 gem "cssbundling-rails"
+
+gem "csv"
