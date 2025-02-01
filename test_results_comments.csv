@@ -1,0 +1,7 @@
+Scenario,Test Description,Result,Message
+1,Belongs to post association,true,Association exists
+2,Presence of comment,true,Comment is present
+3,Missing comment validation,false,"comment cannot be empty, so invalid"
+4,Missing post association on comment validation,false,Comment without a post is invalid
+5,Validation of is_deleted,true,is_deleted defaults to false
+6,All fields validation,true,Comment object with all fields is valid
