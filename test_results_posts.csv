@@ -1,0 +1,7 @@
+Scenario,Test Description,Result,Message
+1,Has many comments association,true,Association exists
+2,Presence of title,true,Title 'Labore et inventore omnis.' is present
+3,Missing title validation,false,Post object without a title is invalid
+4,Presence of content,true,Content is present
+5,Missing content validation,false,Post without content input is invalid
+6,All fields validation,true,Post object with all fields is valid
