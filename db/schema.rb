@@ -54,5 +54,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_09_142231) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "is_removed", default: false, null: false
+    t.text "images", default: "[]"
   end
+
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
 end
