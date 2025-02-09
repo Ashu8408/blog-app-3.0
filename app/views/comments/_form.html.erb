@@ -9,5 +9,7 @@
   <div class="mb-4">
     <%= f.input :comment, input_html: { class: 'w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500' }, wrapper: false %>
   </div>
+  active text below
+  <%= f.rich_text_area :comment %>
   <%= f.button :submit, 'Leave a reply', class: "bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700" %>
 <% end %>
