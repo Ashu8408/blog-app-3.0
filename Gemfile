@@ -72,3 +72,5 @@ gem "cssbundling-rails"
 gem "csv"
 
 gem "tailwindcss-rails", "~> 3.3"
+
+gem "devise", "~> 4.9"
