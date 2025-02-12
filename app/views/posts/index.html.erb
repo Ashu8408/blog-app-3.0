@@ -1,22 +1,114 @@
 <% content_for :page_title, "Welcome to Blog App" %>
-
-<div class="container mx-auto py-6">
-  <% @posts.each do |post| %>
-    <div class="flex items-center shadow-md rounded-lg p-4 mb-4 gap-5">
-    <div>
-      <h2 class="text-xl font-bold">
-        <%= link_to post.title, post, class: "text-blue-500 hover:underline" %>
-      </h2>
-      <p class="text-base"><%= post.content %></p>
+<div data-controller=""> <!--data controller failing to connect-->
+  <div class="container mx-auto py-6">
+    <div class="mb-4">
+      <input type="text" id="searchInput" placeholder="Search posts..." class="w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
     </div>
-    <div class="flex text-sm px-2 py-1 rounded-full gap-1">
-      <%= link_to post_path(post), class: "cursor-pointer" do %>
-         <svg width="25" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(0 0 0)">
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M2.50002 12.0957C2.50002 6.849 6.75332 2.5957 12 2.5957C17.2467 2.5957 21.5 6.849 21.5 12.0957C21.5 17.3424 17.2467 21.5957 12 21.5957H3.25002C2.94668 21.5957 2.6732 21.413 2.55711 21.1327C2.44103 20.8525 2.50519 20.5299 2.71969 20.3154L4.77303 18.262C3.35633 16.603 2.50002 14.4488 2.50002 12.0957ZM12 4.0957C7.58174 4.0957 4.00002 7.67742 4.00002 12.0957C4.00002 14.305 4.89463 16.304 6.34317 17.7526C6.48382 17.8932 6.56284 18.084 6.56284 18.2829C6.56284 18.4818 6.48382 18.6726 6.34317 18.8132L5.06068 20.0957H12C16.4183 20.0957 20 16.514 20 12.0957C20 7.67742 16.4183 4.0957 12 4.0957Z" fill="#343C54"/>
-        </svg>
-      <% end %>
-        <%= post.comments.count %>
+    <div id="post_container">
+    <% @posts.each do |post| %>
+      <div class="post-item flex items-center shadow-md rounded-lg p-4 mb-4 gap-5">
+        <div>
+          <label id="post_<%= post.id %>_title" class="text-xl font-bold">
+            <%= link_to post.title, post, class: "text-blue-500 hover:underline" %>
+          </label>
+          <p id="post_<%= post.id %>_content" class="text-base">
+            <%= post.content %>
+          </p>
+        </div>
+        <div class="flex text-sm px-2 py-1 rounded-full gap-1">
+          <%= link_to post_path(post), class: "cursor-pointer" do %>
+            <svg width="25" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(0 0 0)">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M2.50002 12.0957C2.50002 6.849 6.75332 2.5957 12 2.5957C17.2467 2.5957 21.5 6.849 21.5 12.0957C21.5 17.3424 17.2467 21.5957 12 21.5957H3.25002C2.94668 21.5957 2.6732 21.413 2.55711 21.1327C2.44103 20.8525 2.50519 20.5299 2.71969 20.3154L4.77303 18.262C3.35633 16.603 2.50002 14.4488 2.50002 12.0957ZM12 4.0957C7.58174 4.0957 4.00002 7.67742 4.00002 12.0957C4.00002 14.305 4.89463 16.304 6.34317 17.7526C6.48382 17.8932 6.56284 18.084 6.56284 18.2829C6.56284 18.4818 6.48382 18.6726 6.34317 18.8132L5.06068 20.0957H12C16.4183 20.0957 20 16.514 20 12.0957C20 7.67742 16.4183 4.0957 12 4.0957Z" fill="#343C54"/>
+            </svg>
+          <% end %>
+          <%= post.comments.count %>
+        </div>
       </div>
-      </div>
-  <% end %>
+    <% end %>
+  </div>
+  <div class="flex justify-center gap-2 items-center mt-4">
+  <button id="post_prev_page" class="px-4 py-2 bg-gray-300 rounded "><strong>Previous</strong></button>
+  <div id="post_page_numbers" class="flex gap-2"></div>
+  <button id="post_next_page" class="px-4 py-2 bg-gray-300 rounded "><strong>Next</strong></button>
 </div>
+<p id="post_page_info" class="text-center mt-2"></p>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const searchInput = document.getElementById("searchInput");
+  const posts = document.querySelectorAll(".post-item");
+
+  searchInput.addEventListener("input", function() {
+    const searchText = searchInput.value.toLowerCase();
+
+    posts.forEach(post => {
+      const title = post.querySelector("label").textContent.toLowerCase();
+      const content = post.querySelector("p").textContent.toLowerCase();
+
+      if (title.includes(searchText) || content.includes(searchText)) {
+        post.style.display = "flex";
+      } else {
+        post.style.display = "none";
+      }
+    });
+  });
+});
+
+
+const postsPerPage = 5;
+let currentPage = 0;
+
+function updatePostList() {
+  const posts = document.querySelectorAll(".post-item");
+  const totalPosts = posts.length;
+  const totalPages = Math.ceil(totalPosts / postsPerPage);
+  const start = currentPage * postsPerPage;
+  const end = Math.min(start + postsPerPage, totalPosts);
+
+  posts.forEach((post, index) => {
+    post.style.display = (index >= start && index < end) ? "flex" : "none";
+  });
+
+  const prevButton = document.getElementById("post_prev_page");
+  const nextButton = document.getElementById("post_next_page");
+
+  prevButton.classList.toggle("invisible", currentPage === 0);
+  nextButton.classList.toggle("invisible", currentPage >= totalPages - 1);
+
+  const pageNumbersContainer = document.getElementById("post_page_numbers");
+  pageNumbersContainer.innerHTML = "";
+
+  for (let i = 0; i < totalPages; i++) {
+    const pageNumber = document.createElement("span");
+    pageNumber.textContent = i + 1;
+    pageNumber.className = `mx-1 cursor-pointer px-2 py-1 rounded ${
+      i === currentPage ? "font-bold bg-green-500 text-white" : "bg-gray-200"
+    }`;
+    pageNumber.onclick = () => {
+      currentPage = i;
+      updatePostList();
+    };
+    pageNumbersContainer.appendChild(pageNumber);
+  }
+}
+
+document.getElementById("post_prev_page").addEventListener("click", () => {
+  if (currentPage > 0) {
+    currentPage--;
+    updatePostList();
+  }
+});
+
+document.getElementById("post_next_page").addEventListener("click", () => {
+  const totalPosts = document.querySelectorAll(".post-item").length;
+  if (currentPage < Math.ceil(totalPosts / postsPerPage) - 1) {
+    currentPage++;
+    updatePostList();
+  }
+});
+
+document.addEventListener("DOMContentLoaded", updatePostList);
+
+</script>
