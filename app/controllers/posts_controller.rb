@@ -1,4 +1,5 @@
 class PostsController < ApplicationController
+  before_action :authenticate_user!, except: [:show, :index]
 
   def index
     @posts = Post.where(is_removed: false).order(created_at: :desc)
@@ -8,25 +9,10 @@ class PostsController < ApplicationController
     @post = Post.new
   end
 
-  # def create
-  #   @post = Post.new(post_params)
-
-  #   if params[:post][:images].present?
-  #     uploaded_images = params[:post][:images].select { |img| img.is_a?(ActionDispatch::Http::UploadedFile) }
-  #     @post.images = uploaded_images.map(&:original_filename)
-  #     save_uploaded_images(uploaded_images)
-  #   end
-
-  #   if @post.save
-  #     redirect_to @post, notice: "Post created successfully!"
-  #   else
-  #     render "new"
-  #   end
-  # end
-
 
   def create
     @post = Post.new(post_params)
+    # @post.user = current_user
 
     if @post.save
       redirect_to @post, notice: 'Post was successfully created.'
@@ -35,47 +21,10 @@ class PostsController < ApplicationController
     end
   end
 
-  # def save_uploaded_images(uploaded_images)
-  #   upload_path = Rails.root.join("public/uploads")
-  #   FileUtils.mkdir_p(upload_path) unless File.directory?(upload_path)
-
-  #   uploaded_images.each do |img|
-  #     file_path = upload_path.join(img.original_filename)
-  #     File.open(file_path, "wb") { |file| file.write(img.read) }
-  #   end
-  # end
-
-  # def save_uploaded_image(uploaded_file)
-  #   filename = "#{SecureRandom.hex(10)}_#{uploaded_file.original_filename}"
-  #   filepath = Rails.root.join("public", "uploads", filename)
-
-  #   File.open(filepath, "wb") do |file|
-  #     file.write(uploaded_file.read)
-  #   end
-
-  #   filename # Return filename to store in DB
-  # end
-
 
   def show
     @post = Post.find(params[:id])
   end
-
-  # def update
-  #   @post = Post.find(params[:id])
-
-  #   if params[:post][:images].present?
-  #     @post.images += params[:post][:images].map { |img| img.original_filename }
-  #     save_uploaded_images(params[:post][:images])
-  #   end
-
-  #   if @post.update(post_params)
-  #     redirect_to @post
-  #   else
-  #     render "edit"
-  #   end
-
-  # end
 
 
   def update
