@@ -102,28 +102,28 @@
 
   });
 
-const commentsPerPage = 2;
-let visibleComments = commentsPerPage;
+  const commentsPerPage = 5;
+  let visibleComments = commentsPerPage;
 
-function updateCommentList() {
-  const comments = document.querySelectorAll(".comment-item");
-  comments.forEach((comment, index) => {
-    comment.style.display = index < visibleComments ? "block" : "none";
+  function updateCommentList() {
+    const comments = document.querySelectorAll(".comment-item");
+    comments.forEach((comment, index) => {
+      comment.style.display = index < visibleComments ? "block" : "none";
+    });
+
+    const showMoreButton = document.getElementById("showMoreComments");
+    if (visibleComments >= comments.length) {
+      showMoreButton.style.display = "none";
+    } else {
+      showMoreButton.style.display = "block";
+    }
+  }
+
+  document.getElementById("showMoreComments").addEventListener("click", () => {
+    visibleComments += commentsPerPage;
+    updateCommentList();
   });
 
-  const showMoreButton = document.getElementById("showMoreComments");
-  if (visibleComments >= comments.length) {
-    showMoreButton.style.display = "none";
-  } else {
-    showMoreButton.style.display = "block";
-  }
-}
-
-document.getElementById("showMoreComments").addEventListener("click", () => {
-  visibleComments += commentsPerPage;
-  updateCommentList();
-});
-
-document.addEventListener("DOMContentLoaded", updateCommentList);
+  document.addEventListener("DOMContentLoaded", updateCommentList);
 
 </script>
