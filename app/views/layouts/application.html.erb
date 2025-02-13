@@ -3,8 +3,9 @@
   <head>
     <title>Blog App 3.0</title>
     <%= csrf_meta_tags %>
-    <%#= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag "application", type: "module", "data-turbo-track": "reload" %>
