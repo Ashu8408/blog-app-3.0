@@ -1,7 +1,7 @@
 <div>
 <%= link_to "Posts homepage", posts_path %><br><br>
-  <h1 class="font-bold text-4xl">Pages#home</h1>
-  <p>Find me in app/views/pages/home.html.erb</p>
+  <h1 class="font-bold text-4xl">Login Homepage</h1>
+  <!--<p>Find me in app/views/pages/home.html.erb</p>-->
 
 
 <%
@@ -16,7 +16,9 @@
 <%
 =end%>
 
-<br><br>
+<%
+=begin%>
+ <br><br>
 <h3>Old way</h3>
 <% if current_user %>
   <%= link_to 'Sign out', destroy_user_session_path, method: :delete, data: {turbo_method: :delete} %>
@@ -24,7 +26,9 @@
 <% else %>
   <%= link_to 'Sign up', new_user_registration_path %>
   <%= link_to 'Sign in', new_user_session_path %>
-<% end %>
+<% end %> 
+<%
+=end%>
 
 <br><br>
 <h3>User logins</h3>
@@ -33,24 +37,28 @@
   <%= button_to 'Sign out', destroy_user_session_path, method: :delete %>
   <%= link_to 'Edit user registration', edit_user_registration_path %>
 
-<% elsif !admin_signed_in? %>
+<% else !admin_signed_in? %>
   <%#= link_to 'Sign user out', destroy_user_session_path, method: :delete, data: {turbo_method: :delete} %>
-  <%= link_to 'Sign up', new_user_registration_path %>
   <%= link_to 'Sign in', new_user_session_path %>
+  <%= link_to 'Sign up', new_user_registration_path %>
 <% end %>
 
-<% if admin_signed_in? %>
-<br><br>
-<h3>Admin logins</h3>
-  <%#= link_to 'Sign admin out', destroy_admin_session_path, method: :delete, data: {turbo_method: :delete} %>
-  <%= button_to 'Sign admin out', destroy_admin_session_path, method: :delete %>
-  <%= link_to 'Edit id/pass', edit_admin_registration_path %>
+<%
+=begin%>
+ <% if admin_signed_in? %>
+  <br><br>
+  <h3>Admin logins</h3>
+    <%#= link_to 'Sign admin out', destroy_admin_session_path, method: :delete, data: {turbo_method: :delete} %>
+    <%= button_to 'Sign admin out', destroy_admin_session_path, method: :delete %>
+    <%= link_to 'Edit id/pass', edit_admin_registration_path %>
 <% elsif !user_signed_in? %>
-<br><br>
-<h3>Admin logins</h3>
-  <%= link_to 'Sign up', new_admin_registration_path %>
-  <%= link_to 'Sign in', new_admin_session_path %>
-<% end %>
+  <br><br>
+  <h3>Admin logins</h3>
+    <%= link_to 'Sign up', new_admin_registration_path %>
+    <%= link_to 'Sign in', new_admin_session_path %>
+<% end %> 
+<%
+=end%>
 </div>
 
 <div>
