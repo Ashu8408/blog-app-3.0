@@ -2,7 +2,7 @@ class CommentsController < ApplicationController
   before_action :set_post
 
   def index
-    @all_comments = @post.comments.where(is_deleted: false)
+    @all_comments = @post.comments.where(is_deleted: false).order(created_at: :desc)
   end
   def create
     @post = Post.find(params[:post_id])

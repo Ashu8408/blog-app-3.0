@@ -1,15 +1,23 @@
 <% content_for :page_title, @post.title %>
-<section class="container mx-auto py-6">
-  <div class="shadow-md rounded-lg p-4">
+<section class="container bg-gradient-to-b from-yellow-50 via-yellow-100 to-yellow-50 mx-auto py-6">
+  
+  
+  
+  
+  <div class="rounded-lg px-2 py-4">
     <nav>
       <div class="flex items-center justify-between">
-        <h2 class="text-lg font-bold">Actions</h2>
+         <div class="text-sm text-gray-500 mt-4">
+          <p>Created at: <%= @post.created_at.in_time_zone("Asia/Kolkata").strftime("%B %d, %Y %I:%M %p") %></p>
+          <p>Last updated: <%= @post.updated_at.in_time_zone("Asia/Kolkata").strftime("%B %d, %Y %I:%M %p") %></p>
+        </div>
         <div class="flex mt-5 gap-3">
           <%= link_to "Edit", edit_post_path(@post), class:"bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-700" %>        
           <%= button_to 'Delete', post_path(@post), method: :delete, class: "bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700", data: { confirm: 'Are you sure?' } %>
         </div>
       </div>
     </nav>
+  </div>
     <%
 =begin%>
  <p>
@@ -17,27 +25,26 @@
     </p> 
 <%
 =end%>
-    <div class="mt-3">
-      <%= @post.content %>
-    </div>
 
-    <% if @post.images.attached? %>
-      <div class="mt-4 mb-4 grid grid-cols-2 md:grid-cols-3 gap-4">
-        <% @post.images.each do |image| %>
-          <div class="border rounded-lg p-2">
-            <%= image_tag image, class: "w-full h-auto rounded" %>
-            <%#= button_to 'Delete', delete_image_post_path(@post, image.signed_id), method: :delete, class: "bg-red-500 text-white px-2 py-1 rounded hover:bg-red-700" %>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
+      <% if @post.images.attached? %>
+              <div class="mt-4 mb-4 grid grid-cols-2 md:grid-cols-3 gap-4 p-4">
+                <% @post.images.each do |image| %>
+                  <div class="bg-gray-200 rounded-lg p-1">
+                    <%= image_tag image, class: "w-full h-48 object-cover rounded" %>
+                  </div>
+                <% end %>
+              </div>
+             
+            <% end %>
+             <div class="rounded-lg p-4">
+                <%= @post.content %>
+              </div>
 
 
   </div>
 </section>
   </div>
-    <div class="mt-6 p-4 rounded-lg">
-    <h3 class="text-lg font-bold mb-3">Leave a reply</h3>
+    <div class="bg-yellow-50 mt-6 p-4 rounded-lg">
     <%= render 'comments/form' %>
   </div>
 
@@ -56,26 +63,31 @@
 =end%>
 
 <section class="container mx-auto mt-4 py-6">
-  <h2 class="text-xl font-bold mb-3"><%= @post.comments.where(is_deleted: false).count %> Comments</h2>
-
-  <div class="flex gap-5 mb-4">
-    <input type="text" id="commentSearch" placeholder="Search comments" class="w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-    <p id="searchResultsComments" class="whitespace-nowrap mt-2"></p>
+  <div class="flex items-center justify-between gap-5 px-3 mb-3">
+  
+    <h2 class="text-xl font-bold whitespace-nowrap"><%= @post.comments.where(is_deleted: false).count %> Comments</h2>
+    <div class="flex justify-between w-1/2">
+      <input type="text" id="commentSearch" placeholder="Search comments" class="w-1/2 bg-white placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md pl-3 pr-28 px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow">
+      <p id="searchResultsComments" class="whitespace-nowrap mt-2"></p>
+    </div>
   </div>
 
 
   <div id="commentsContainer">
-    <% @post.comments.where(is_deleted: false).each do |comment| %>
-      <div class="flex justify-between bg-white shadow-md rounded-lg p-4 mb-4 comment-item" data-comment-id="<%= comment.id %>">
-        <p class="comment-content text-gray-700"><%= comment.comment %></p>
+    <% @post.comments.where(is_deleted: false).order(created_at: :desc).each do |comment| %>
+      <div class="flex justify-between bg-yellow-50 shadow-md rounded-lg p-4 mb-4 comment-item" data-comment-id="<%= comment.id %>">
+        <div><p class="comment-content text-md text-gray-700"><%= comment.comment %></p>
+        <p class="text-xs text-gray-500 mt-1">Created at: <%= comment.created_at.in_time_zone("Asia/Kolkata").strftime("%B %d, %Y %I:%M %p") %></p>
+        </div>
         <%= button_to 'Delete', [comment.post, comment], method: :delete, class: "bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700", data: { confirm: 'Are you sure?' } %>
       </div>
     <% end %>
   </div>
 
-  <button id="showMoreComments" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 mt-4 w-full">
-  Show More
-  </button>
+ <button id="showMoreComments" class="p-1 bg-gray-200 text-gray-700 mt-4 w-1/3 block mx-auto text-center rounded">
+  Show More...
+</button>
+
 </section>
 
 <script>
@@ -92,7 +104,7 @@
 
         if (content.includes(searchText)) {
           ++ResultsCount;
-          comment.style.display = "block";
+          comment.style.display = "flex";
         } else {
           comment.style.display = "none";
         }
@@ -102,20 +114,20 @@
 
   });
 
-  const commentsPerPage = 5;
+  const commentsPerPage = 2;
   let visibleComments = commentsPerPage;
 
   function updateCommentList() {
     const comments = document.querySelectorAll(".comment-item");
     comments.forEach((comment, index) => {
-      comment.style.display = index < visibleComments ? "block" : "none";
+      comment.style.display = index < visibleComments ? "flex" : "none";
     });
 
     const showMoreButton = document.getElementById("showMoreComments");
     if (visibleComments >= comments.length) {
       showMoreButton.style.display = "none";
     } else {
-      showMoreButton.style.display = "block";
+      showMoreButton.style.display = "justify-between";
     }
   }
 

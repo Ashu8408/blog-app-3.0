@@ -1,15 +1,18 @@
 <div class="container mx-auto p-4 shadow-md rounded-lg">
   <%= simple_form_for @post do |f| %>
     <div class="mb-3">
-      <%= f.input :title, label_html: { class: 'font-bold' }, input_html: { class: 'w-full px-2 py-1 border rounded focus:outline-none focus:ring-2' }, wrapper: false %>
+      <label class="font-bold">Title:</label>
+      <%= f.text_field :title, class: 'w-full bg-white px-2 py-1 border rounded focus:outline-none focus:ring-2', required: true %>
     </div>
     <div class="mb-3">
-      <%= f.input :content, label_html: { class: 'font-bold' }, input_html: { class: 'w-full px-2 py-1 border rounded focus:outline-none focus:ring-2' }, wrapper: false %>
+    <label class="font-bold">Content:</label>
+      <%= f.text_area :content, class: 'w-full bg-white px-2 py-1 border rounded focus:outline-none focus:ring-2', required: true %>
+
     </div>
     <% if @post.images.attached? %>
   <div class="mt-4 mb-4 grid grid-cols-2 md:grid-cols-3 gap-4">
     <% @post.images.each do |image| %>
-      <div class="border rounded-lg p-2">
+      <div class="bg-gray-200 rounded-lg rounded-lg p-2 ">
         <%= image_tag image, class: "w-full h-auto rounded" %>
         <%#= button_to 'Delete', delete_image_post_path(@post, image.signed_id), method: :delete, class: "bg-red-500 text-white px-2 py-1 rounded hover:bg-red-700" %>
       </div>

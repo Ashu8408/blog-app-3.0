@@ -1,70 +1,21 @@
-<div>
-<%= link_to "Posts homepage", posts_path %><br><br>
-  <h1 class="font-bold text-4xl">Login Homepage</h1>
-  <!--<p>Find me in app/views/pages/home.html.erb</p>-->
+<div class="container mx-auto p-6 bg-gray-100 shadow-lg rounded-lg text-center">
+  <%= link_to "Posts Homepage", posts_path, class: "text-blue-500 hover:underline text-lg" %>
 
+  <h1 class="text-3xl font-bold mt-4 text-gray-800">Login Homepage</h1>
 
-<%
-=begin%>
- <% if current_user %>
-  <% link_to 'Session time out', destroy_user_session_path, model %>
-  <% link_to 'Edit', edit_user %>
+  <div class="mt-6 p-4 bg-white rounded-lg shadow-md">
+    <h3 class="text-xl font-semibold text-gray-700">User Logins</h3>
 
-<% else %>
-
-<% end %> 
-<%
-=end%>
-
-<%
-=begin%>
- <br><br>
-<h3>Old way</h3>
-<% if current_user %>
-  <%= link_to 'Sign out', destroy_user_session_path, method: :delete, data: {turbo_method: :delete} %>
-  <%= link_to 'Edit current user registration', edit_user_registration_path %>
-<% else %>
-  <%= link_to 'Sign up', new_user_registration_path %>
-  <%= link_to 'Sign in', new_user_session_path %>
-<% end %> 
-<%
-=end%>
-
-<br><br>
-<h3>User logins</h3>
-<% if user_signed_in? %>
-  <%#= link_to 'Sign out', destroy_user_session_path, method: :delete, data: {turbo_method: :delete} %>
-  <%= button_to 'Sign out', destroy_user_session_path, method: :delete %>
-  <%= link_to 'Edit user registration', edit_user_registration_path %>
-
-<% else !admin_signed_in? %>
-  <%#= link_to 'Sign user out', destroy_user_session_path, method: :delete, data: {turbo_method: :delete} %>
-  <%= link_to 'Sign in', new_user_session_path %>
-  <%= link_to 'Sign up', new_user_registration_path %>
-<% end %>
-
-<%
-=begin%>
- <% if admin_signed_in? %>
-  <br><br>
-  <h3>Admin logins</h3>
-    <%#= link_to 'Sign admin out', destroy_admin_session_path, method: :delete, data: {turbo_method: :delete} %>
-    <%= button_to 'Sign admin out', destroy_admin_session_path, method: :delete %>
-    <%= link_to 'Edit id/pass', edit_admin_registration_path %>
-<% elsif !user_signed_in? %>
-  <br><br>
-  <h3>Admin logins</h3>
-    <%= link_to 'Sign up', new_admin_registration_path %>
-    <%= link_to 'Sign in', new_admin_session_path %>
-<% end %> 
-<%
-=end%>
+    <% if user_signed_in? %>
+      <div class="mt-4">
+        <%= button_to 'Sign Out', destroy_user_session_path, method: :delete, class: "bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700" %>
+        <%= link_to 'Edit User Registration', edit_user_registration_path, class: "block mt-2 text-blue-500 hover:underline" %>
+      </div>
+    <% else %>
+      <div class="mt-4 flex flex-col gap-3">
+        <%= link_to 'Sign In', new_user_session_path, class: "bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+        <%= link_to 'Sign Up', new_user_registration_path, class: "bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700" %>
+      </div>
+    <% end %>
+  </div>
 </div>
-
-<div>
-<br><br>
-<h2>Page Links</h2>
-<%= link_to "Home", root_path %>
-<%= link_to "User Login Path", pages_users_path %>
-<%= link_to "Admin Login Path", pages_admin_path %><br><br>
-

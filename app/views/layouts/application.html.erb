@@ -13,18 +13,25 @@
 
   </head>
 
-  <body class="bg-gray-100 text-gray-900">
-    <p class="notice"><%= notice %></p>
+  <body class="bg-yellow-100 text-gray-900">
+    <p class="notice bg-white"><%= notice %></p>
     <p class="alert"><%= alert %></p>
     
     <!-- Navbar -->
-    <nav class="bg-blue-400 p-4">
+    <nav class="bg-blue-600 p-2">
       <div class="container mx-auto flex justify-between items-center">
-        <%= link_to 'Blog app 3.0', posts_path, class: "text-white text-xl font-bold" %>
-        <div class="flex gap-2">
-          <%= link_to "Create New Post", new_post_path, class: "text-white bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded" %>
-          <%= link_to root_path, class: "text-white bg-grey-500 px-4 py-2 rounded" do %>
-          <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+        
+          <%= link_to posts_path, class: "flex items-center gap-2" do %>
+            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#FFFFFF" viewBox="0 0 24 24">
+              <path fill-rule="evenodd" d="M11.293 3.293a1 1 0 0 1 1.414 0l6 6 2 2a1 1 0 0 1-1.414 1.414L19 12.414V19a2 2 0 0 1-2 2h-3a1 1 0 0 1-1-1v-3h-2v3a1 1 0 0 1-1 1H7a2 2 0 0 1-2-2v-6.586l-.293.293a1 1 0 0 1-1.414-1.414l2-2 6-6Z" clip-rule="evenodd"/>
+            </svg>
+            <label class="text-white font-bold text-xl px-4 py-2 rounded cursor-pointer">Blog app 3.0</label><% end %>
+            <%#= link_to 'Blog app 3.0', posts_path, class: "text-white font-bold text-xl px-4 py-2 rounded" %>
+        
+        <div class="flex items-center gap-2">
+          <%= link_to " + Create New Post", new_post_path, class: "text-white font-bold text-md bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded" %>
+          <%= link_to root_path, class: "text-white px-4 py-2 rounded" do %>
+          <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
             <path fill-rule="evenodd" d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z" clip-rule="evenodd"/>
           </svg>
 
@@ -34,7 +41,7 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="text-black py-16">
+    <section class="text-black py-5">
       <div class="container mx-auto text-center">
         <h1 class="text-4xl font-bold">
           <%= yield :page_title %>
@@ -43,7 +50,7 @@
     </section>
 
     <!-- Main Content -->
-    <main class="container mx-auto py-8">
+    <main class="container mx-auto">
       <%= yield %>
     </main>
 
