@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_10_192452) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_15_080808) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -68,6 +68,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_10_192452) do
     t.integer "post_id"
     t.boolean "is_deleted", default: false, null: false
     t.string "comment"
+    t.integer "user_id"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -77,6 +78,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_10_192452) do
     t.datetime "updated_at", null: false
     t.boolean "is_removed", default: false, null: false
     t.text "images", default: "[]"
+    t.integer "user_id"
   end
 
   create_table "users", force: :cascade do |t|

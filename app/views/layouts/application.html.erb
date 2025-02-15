@@ -14,9 +14,10 @@
   </head>
 
   <body class="bg-yellow-100 text-gray-900">
-    <p class="notice bg-white"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
-    
+    <div class="text-center">
+      <p class="notice bg-green-400 text-black"><%= notice %></p>
+      <p class="alert bg-red-500 text-white"><%= alert %></p>
+    </div>    
     <!-- Navbar -->
     <%= render partial: "loggedin/navbar" %>
 

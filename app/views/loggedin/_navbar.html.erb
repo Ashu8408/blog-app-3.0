@@ -9,11 +9,18 @@
         <% end %>
         <div class="flex items-center gap-2">
             <%= link_to " + Create New Post", new_post_path, class: "text-white font-bold text-md bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded" %>
-            <%= link_to root_path, class: "text-white px-4 py-2 rounded" do %>
-            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                <path fill-rule="evenodd" d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z" clip-rule="evenodd"/>
-            </svg>
-            <% end %>
+            <div class="flex items-center px-4 py-2 text-white">
+                <%= link_to pages_home_path, class:"flex items-center" do %>
+                    <svg class="w-6 h-6 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z" clip-rule="evenodd"/>
+                    </svg>
+                    <% if current_user %>
+                        <label class="font-semibold cursor-pointer"><%= current_user.email.split('@').first.capitalize %></label>
+                    <% else %>
+                        <%= link_to "Login", new_user_session_path, class: "text-white font-semibold" %>
+                    <% end %>
+                <% end %>
+            </div>
         </div>
     </div>
 </nav>
