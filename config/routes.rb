@@ -3,11 +3,11 @@ Rails.application.routes.draw do
   get "pages/users"
   get "pages/admin"
   devise_for :admins, controllers: {
-    sessions: 'admin/sessions',
-    registrations: 'admin/registrations'
+    sessions: "admin/sessions",
+    registrations: "admin/registrations"
   }
   devise_for :users, controller: {
-    sessions: 'users/sessions'
+    sessions: "users/sessions"
   }
   # # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -23,8 +23,8 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   resources :posts do
-  	resources :comments
+    resources :comments
   end
-  # root 'posts#index'
-  root 'pages#home'
+  root 'posts#index'
+  # root "pages#home"
 end
