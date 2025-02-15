@@ -4,7 +4,8 @@
     "postcss": "^8.5.1"
   },
   "scripts": {
-  "tailwind": "tailwindcss -i ./app/assets/stylesheets/application.css -o ./app/assets/builds/tailwind.css --watch"
+  "tailwind": "tailwindcss -i ./app/assets/stylesheets/application.css -o ./app/assets/builds/tailwind.css --watch",
+  "build:css": "tailwindcss -i ./app/assets/stylesheets/application.css -o ./app/assets/builds/tailwind.css --minify"
 },
   "devDependencies": {
     "tailwindcss": "^4.0.6"
