@@ -1,13 +1,7 @@
 <%= simple_form_for([@post, @post.comments.build]) do |f| %>
-  <%
-=begin%>
- <div class="mb-4">
-    <%= f.input :name, input_html: { class: 'w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500' }, wrapper: false %>
-  </div> 
-<%
-=end%>
-  <div class="mb-4">
-    <%= f.input :comment, input_html: { class: 'bg-white w-full min-h-[50px] px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500' }, placeholder: "Write a Comment...", wrapper: false %>
+  <div class="flex gap-2 mb-4">
+    <label class="font-bold">Comment:</label>
+    <%= f.text_area :comment, class: 'w-full bg-white px-2 py-1 border rounded focus:outline-none focus:ring-2', placeholder: "Write a Comment...", required: true %>
   </div>
   <%= f.button :submit, 'Leave a reply', class: "bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700" %>
 <% end %>
