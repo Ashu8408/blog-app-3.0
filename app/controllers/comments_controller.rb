@@ -29,7 +29,7 @@ class CommentsController < ApplicationController
       redirect_to post_path(@post), alert: "Failed to delete comment."
     end
   end
-  
+
 
   private
 

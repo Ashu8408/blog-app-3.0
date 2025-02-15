@@ -1,9 +1,7 @@
+<%= turbo_frame_tag "turbo-content" do %>
+
 <% content_for :page_title, @post.title %>
-<section class="container bg-gradient-to-b from-yellow-50 via-yellow-100 to-yellow-50 mx-auto py-6">
-  
-  
-  
-  
+<section class="container bg-gradient-to-b from-yellow-50 via-yellow-100 to-yellow-50 mx-auto py-6"> 
   <div class="rounded-lg px-2 py-4">
     <nav>
       <div class="flex items-center justify-between">
@@ -18,13 +16,6 @@
       </div>
     </nav>
   </div>
-    <%
-=begin%>
- <p>
-      <strong>User:</strong><%= @post.user %>
-    </p> 
-<%
-=end%>
 
       <% if @post.images.attached? %>
               <div class="mt-4 mb-4 grid grid-cols-2 md:grid-cols-3 gap-4 p-4">
@@ -89,7 +80,7 @@
 </button>
 
 </section>
-
+<%end%>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     const searchInput = document.getElementById("commentSearch");
