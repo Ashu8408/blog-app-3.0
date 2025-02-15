@@ -1,20 +1,21 @@
-<h2>Log in</h2>
+<div class="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
+  <h2 class="text-2xl font-bold mb-4">Sign In</h2>
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+    <div class="mb-4">
+      <%= f.label :email, class: "block text-gray-700 font-bold mb-2" %>
+      <%= f.email_field :email, class: "w-full p-2 border rounded-md" %>
+    </div>
 
-<%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="form-inputs">
-    <%= f.input :email,
-                required: false,
-                autofocus: true,
-                input_html: { autocomplete: "email" } %>
-    <%= f.input :password,
-                required: false,
-                input_html: { autocomplete: "current-password" } %>
-    <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
-  </div>
+    <div class="mb-4">
+      <%= f.label :password, class: "block text-gray-700 font-bold mb-2" %>
+      <%= f.password_field :password, class: "w-full p-2 border rounded-md" %>
+    </div>
 
-  <div class="form-actions">
-    <%= f.button :submit, "Log in" %>
-  </div>
-<% end %>
+    <%= f.submit "Login", class: "w-full bg-blue-500 text-white p-2 rounded-md" %>
+  <% end %>
 
-<%= render "devise/shared/links" %>
+  <p class="mt-4 text-center">
+    Don't have an account?
+    <%= link_to "Sign Up", new_registration_path(resource_name), class: "text-green-500" %>
+  </p>
+</div>
