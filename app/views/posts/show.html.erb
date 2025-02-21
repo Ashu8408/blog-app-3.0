@@ -1,153 +1,91 @@
 <%= turbo_frame_tag "turbo-content" do %>
+  <div data-controller="comments">
 
-<% content_for :page_title, @post.title %>
-<section class="container bg-gradient-to-b from-yellow-50 via-yellow-100 to-yellow-50 mx-auto py-6"> 
-  <div class="rounded-lg px-2 py-4">
-    <nav>
-      <div class="flex items-center justify-between p-2">
-        <div class="flex text-sm gap-4 text-gray-500">
-          <div>
-            <p>
-              <%= link_to @post.user.email.split('@').first.capitalize, class: "text-md underline text-blue-500" %> 
-              wrote on <%= @post.created_at.in_time_zone("Asia/Kolkata").strftime("%B %d, %Y at %I:%M %p") %>
-            </p>
-            <p>Last updated: <%= @post.updated_at.in_time_zone("Asia/Kolkata").strftime("%B %d, %Y %I:%M %p") %></p>
+    <% content_for :page_title, @post.title %>
+    <section class="container bg-gradient-to-b from-yellow-50 via-yellow-100 to-yellow-50 mx-auto py-6"> 
+      <div class="rounded-lg px-2 py-4">
+        <nav>
+          <div class="flex items-center justify-between p-2">
+            <div class="flex text-sm gap-4 text-gray-500">
+              <div>
+                <p>
+                  <%= link_to @post.user.email.split('@').first.capitalize, class: "text-md underline text-blue-500" %> 
+                  wrote on <%= @post.created_at.in_time_zone("Asia/Kolkata").strftime("%B %d, %Y at %I:%M %p") %>
+                </p>
+                <p>Last updated: <%= @post.updated_at.in_time_zone("Asia/Kolkata").strftime("%B %d, %Y %I:%M %p") %></p>
+              </div>
+              <label class="flex items-center text-md">
+                Created by
+                <%#= link_to @post.user.email.split('@').first.capitalize, class: "text-blue-500 underline px-1" %>
+                <a href="#" class="text-blue-500 underline ml-1">
+                  <%= @post.user.email.split('@').first.capitalize %>
+                </a>
+              </label>
+            </div>
+            <div class="flex gap-3">
+              <% if current_user && @post.user_id == current_user.id %>
+                <%= link_to "Edit", edit_post_path(@post), class:"bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-700" %>
+              <% end %>      
+              <%= button_to 'Delete', post_path(@post), method: :delete, class: "bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700", data: { confirm: 'Are you sure?', turbo: false } %>
+            </div>
           </div>
-          <label class="flex items-center text-md">
-            Created by
-            <%#= link_to @post.user.email.split('@').first.capitalize, class: "text-blue-500 underline px-1" %>
-            <a href="#" class="text-blue-500 underline ml-1">
-              <%= @post.user.email.split('@').first.capitalize %>
-            </a>
-          </label>
-        </div>
-        <div class="flex gap-3">
-          <% if current_user && @post.user_id == current_user.id %>
-            <%= link_to "Edit", edit_post_path(@post), class:"bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-700" %>
-          <% end %>      
-          <%= button_to 'Delete', post_path(@post), method: :delete, class: "bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700", data: { confirm: 'Are you sure?', turbo: false } %>
-        </div>
+        </nav>
       </div>
-    </nav>
-  </div>
-  <div class="rounded-lg p-4">
-    <%= simple_format(@post.content) %>
-  </div>
-   <% if @post.images.attached? %>
-      <div class="mt-4 mb-4 grid grid-cols-2 md:grid-cols-3 gap-4 p-4">
-        <% @post.images.each do |image| %>
-          <div class="bg-gray-200 rounded-lg p-1">
-            <%= image_tag image, class: "w-full h-48 object-cover rounded" %>
+      <div class="rounded-lg p-4">
+        <%= simple_format(@post.content) %>
+      </div>
+      <% if @post.images.attached? %>
+          <div class="mt-4 mb-4 grid grid-cols-2 md:grid-cols-3 gap-4 p-4">
+            <% @post.images.each do |image| %>
+              <div class="bg-gray-200 rounded-lg p-1">
+                <%= image_tag image, class: "w-full h-48 object-cover rounded" %>
+              </div>
+            <% end %>
           </div>
+          
         <% end %>
       </div>
+    </section>
+    <section class="container mx-auto mt-4 py-6">
+      </div>
+        <div class="bg-yellow-50 mt-6 p-4 rounded-lg">
+        <%= render 'comments/form' %>
+      </div>
+    </section>
+
+    <section class="container mx-auto mt-4 py-6">
+      <div class="flex items-center justify-between gap-5 px-3 mb-3">
       
-    <% end %>
-  </div>
-</section>
-<section class="container mx-auto mt-4 py-6">
-  </div>
-    <div class="bg-yellow-50 mt-6 p-4 rounded-lg">
-    <%= render 'comments/form' %>
-  </div>
-</section>
-
-<%
-=begin%>
- 
-<section class="container mx-auto py-6">
-  <h2 class="text-xl font-bold mb-3"><%= @post.comments.count %> Comments</h2>
-    <%= render @post.comments %>
-  <div class="mt-6 p-4 rounded-lg">
-    <h3 class="text-lg font-bold mb-3">Leave a reply</h3>
-    <%= render 'comments/form' %>
-  </div>
-</section> 
-<%
-=end%>
-
-<section class="container mx-auto mt-4 py-6">
-  <div class="flex items-center justify-between gap-5 px-3 mb-3">
-  
-    <h2 class="text-xl font-bold whitespace-nowrap"><%= @post.comments.where(is_deleted: false).count %> Comments</h2>
-    <div class="flex justify-between w-1/2">
-      <input type="text" id="commentSearch" placeholder="Search comments" class="w-1/2 bg-white placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md pl-3 pr-28 px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow">
-      <p id="searchResultsComments" class="whitespace-nowrap mt-2"></p>
-    </div>
-  </div>
-
-
-  <div id="commentsContainer">
-    <% @post.comments.where(is_deleted: false).order(created_at: :desc).each do |comment| %>
-      <div class="flex justify-between bg-yellow-50 shadow-md rounded-lg p-4 mb-4 comment-item" data-comment-id="<%= comment.id %>">
-         
-        <div>
-          <span class="flex items-center gap-2">
-            <p class="text-sm underline text-blue-600">
-              Commented by <%= comment.user.email.split('@').first.capitalize %></p>
-            <p class="text-xs text-gray-500 mt-1">at: <%= comment.created_at.in_time_zone("Asia/Kolkata").strftime("%B %d, %Y %I:%M %p") %></p>
-          </span>
-          <p class="comment-content text-md text-gray-700 px-2 py-1"><%= simple_format(comment.comment) %></p>
+        <h2 class="text-xl font-bold whitespace-nowrap"><%= @post.comments.where(is_deleted: false).count %> Comments</h2>
+        <div class="flex justify-between w-1/2">
+          <input type="text" id="commentSearch" placeholder="Search comments" class="w-1/2 bg-white placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md pl-3 pr-28 px-3 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow">
+          <p id="searchResultsComments" class="whitespace-nowrap mt-2"></p>
         </div>
-        <% if current_user && (comment.user_id == current_user.id || @post.user_id == current_user.id) %>
-          <%= button_to 'Delete', [comment.post, comment], method: :delete, class: "bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700", data: { confirm: 'Are you sure?' } %>
+      </div>
+
+
+      <div id="commentsContainer">
+        <% @post.comments.where(is_deleted: false).order(created_at: :desc).each do |comment| %>
+          <div class="flex justify-between bg-yellow-50 shadow-md rounded-lg p-4 mb-4 comment-item" data-comment-id="<%= comment.id %>">
+            
+            <div>
+              <span class="flex items-center gap-2">
+                <p class="text-sm underline text-blue-600">
+                  Commented by <%= comment.user.email.split('@').first.capitalize %></p>
+                <p class="text-xs text-gray-500 mt-1">at: <%= comment.created_at.in_time_zone("Asia/Kolkata").strftime("%B %d, %Y %I:%M %p") %></p>
+              </span>
+              <p class="comment-content text-md text-gray-700 px-2 py-1"><%= simple_format(comment.comment) %></p>
+            </div>
+            <% if current_user && (comment.user_id == current_user.id || @post.user_id == current_user.id) %>
+              <%= button_to 'Delete', [comment.post, comment], method: :delete, class: "bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700", data: { confirm: 'Are you sure?' } %>
+            <% end %>
+          </div>
         <% end %>
       </div>
-    <% end %>
+
+      <button id="showMoreComments" class="p-1 bg-gray-200 text-gray-700 mt-4 w-1/3 block mx-auto text-center rounded">
+        Show More...
+      </button>
+    </section>
   </div>
-
- <button id="showMoreComments" class="p-1 bg-gray-200 text-gray-700 mt-4 w-1/3 block mx-auto text-center rounded">
-  Show More...
-</button>
-
-</section>
 <%end%>
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const searchInput = document.getElementById("commentSearch");
-    const comments = document.querySelectorAll(".comment-item");
-
-    searchInput.addEventListener("input", function() {
-      let ResultsCount =0
-      const searchText = searchInput.value.toLowerCase();
-
-      comments.forEach(comment => {
-        const content = comment.querySelector(".comment-content").textContent.toLowerCase();
-
-        if (content.includes(searchText)) {
-          ++ResultsCount;
-          comment.style.display = "flex";
-        } else {
-          comment.style.display = "none";
-        }
-      });
-      searchResultsComments.textContent = ResultsCount > 0 ? `${ResultsCount} results found` : "No results found";
-    });
-
-  });
-
-  const commentsPerPage = 2;
-  let visibleComments = commentsPerPage;
-
-  function updateCommentList() {
-    const comments = document.querySelectorAll(".comment-item");
-    comments.forEach((comment, index) => {
-      comment.style.display = index < visibleComments ? "flex" : "none";
-    });
-
-    const showMoreButton = document.getElementById("showMoreComments");
-    if (visibleComments >= comments.length) {
-      showMoreButton.style.display = "none";
-    } else {
-      showMoreButton.style.display = "justify-between";
-    }
-  }
-
-  document.getElementById("showMoreComments").addEventListener("click", () => {
-    visibleComments += commentsPerPage;
-    updateCommentList();
-  });
-
-  document.addEventListener("DOMContentLoaded", updateCommentList);
-
-</script>

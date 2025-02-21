@@ -12,7 +12,9 @@ class CommentsController < ApplicationController
     @comment.user = current_user
 
     if @comment.save
-      redirect_to @post
+      respond_to do |format|
+        format.html { redirect_to @post }
+      end
     else
       flash.now[:danger] = "error"
       render 'posts/show'
