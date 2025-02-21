@@ -17,11 +17,14 @@ class PostsController < ApplicationController
     @post = Post.new(post_params)
     @post.user = current_user
     if @post.save
+      Rails.logger.info("if save me aaya")
       respond_to do |format|
-        format.turbo_stream
-        format.html{ redirect_to @post, notice: "Congrats! The internet has been blessed with your wisdom. " }
+        Rails.logger.info("format turbo next")
+        format.html { redirect_to posts_path, notice: "Congrats! The internet has been blessed with your wisdom. " }
+        Rails.logger.info("congrats")
       end
     else
+      Rails.logger.info("else me aaya")
       render :new
     end
   end
