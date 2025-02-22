@@ -1,12 +1,14 @@
 {
   "dependencies": {
+    "@rails/actiontext": "^8.0.100",
     "autoprefixer": "^10.4.20",
-    "postcss": "^8.5.1"
+    "postcss": "^8.5.1",
+    "trix": "^2.1.12"
   },
   "scripts": {
-  "tailwind": "tailwindcss -i ./app/assets/stylesheets/application.css -o ./app/assets/builds/tailwind.css --watch",
-  "build:css": "tailwindcss -i ./app/assets/stylesheets/application.css -o ./app/assets/builds/tailwind.css --minify"
-},
+    "tailwind": "tailwindcss -i ./app/assets/stylesheets/application.css -o ./app/assets/builds/tailwind.css --watch",
+    "build:css": "tailwindcss -i ./app/assets/stylesheets/application.css -o ./app/assets/builds/tailwind.css --minify"
+  },
   "devDependencies": {
     "tailwindcss": "^4.0.6"
   }
