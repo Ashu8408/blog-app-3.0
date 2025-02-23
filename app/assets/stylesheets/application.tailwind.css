@@ -5,3 +5,5 @@
 @tailwind utilities;
 
 @import "actiontext.css";
+
+@plugin "flowbite-typography";
