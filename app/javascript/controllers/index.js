@@ -11,3 +11,6 @@ application.register("comments", CommentsController)
 
 import CreatePostController from "controllers/create_post_controller"
 application.register("create_post", CreatePostController)
+
+import ExploreFeaturesController from "controllers/explore_features_controller"
+application.register("explore_features", ExploreFeaturesController)
