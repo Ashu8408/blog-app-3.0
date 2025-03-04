@@ -29,4 +29,88 @@
       <p id="post_page_info" class="text-center mt-2"></p>
     </div>
   </div>
+
+  <div class="p-5">
+    <div class="mb-4 flex flex-wrap gap-4">
+      <input type="text" id="search_title" placeholder="Search by Title" class="border p-2 rounded w-1/4">
+      <input type="text" id="search_created_by" placeholder="Search by Created By" class="border p-2 rounded w-1/4">
+      <input type="number" id="min_content_length" placeholder="Min Content Length" class="border p-2 rounded w-1/4">
+      <input type="number" id="max_content_length" placeholder="Max Content Length" class="border p-2 rounded w-1/4">
+      <button id="apply_filters" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Apply Filters</button>
+    </div>
+    <table id="posts_table" class="min-w-full border border-gray-300 bg-white shadow-lg">
+      <thead>
+        <tr class="bg-gray-200">
+          <th class="px-4 py-2 border">#</th>
+          <th class="px-4 py-2 border">Title</th>
+          <th class="px-4 py-2 border">Content Length</th>
+          <th class="px-4 py-2 border">Comments Count</th>
+          <th class="px-4 py-2 border">Created By</th>
+          <th class="px-4 py-2 border">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="posts_table_body">
+        <% @posts.each_with_index do |post, index| %>
+          <tr class="post_row text-center">
+            <td class="px-4 py-2 border index-column"><%= index + 1 %></td>
+            <td class="px-4 py-2 border post-title">
+              <%= link_to post_path(post), data: { turbo_frame: "post_details", turbo_action: "advance" }, class: 'block w-full py-2' do %>
+                <%= post.title %>
+              <% end %>
+            </td>
+            <td class="px-4 py-2 border post-content-length"><%= post.content.length %></td>
+            <td class="px-4 py-2 border"><%= post.comments.count %></td>
+            <td class="px-4 py-2 border post-created-by"><%= post.user&.email.presence || "N/A" %></td>
+            <td class="px-4 py-2 border"> 
+              <%= link_to 'View', post_path(post), class: "bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700" %>
+              <% if post.user == current_user %>
+                <%= link_to 'Edit', edit_post_path(post), class: "bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-700" %>
+                <%= link_to 'Delete', post_path(post), method: :delete, data: { confirm: 'Are you sure?' }, class: "bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700" %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+
+    </table>
+    <!-- Pagination Controls -->
+    <div class="flex justify-between items-center mt-4">
+      <button id="prev_page" class="bg-gray-500 text-white px-4 py-2 rounded invisible">Previous</button>
+      <span id="page_info" class="text-gray-700"></span>
+      <button id="next_page" class="bg-gray-500 text-white px-4 py-2 rounded">Next</button>
+    </div>
+    <div id="page_numbers" class="flex justify-center mt-2"></div>
+  </div>
 <% end %>
+
+
+<script>
+document.getElementById("apply_filters").addEventListener("click", function() {
+    const titleQuery = document.getElementById("search_title").value.toLowerCase().trim();
+    const createdByQuery = document.getElementById("search_created_by").value.toLowerCase().trim();
+    const minContentLength = parseInt(document.getElementById("min_content_length").value) || 0;
+    const maxContentLength = parseInt(document.getElementById("max_content_length").value) || Infinity;
+
+    document.querySelectorAll(".post_row").forEach(row => {
+        const postTitleElem = row.querySelector(".post-title");
+        const postCreatedByElem = row.querySelector(".post-created-by");
+        const postContentLengthElem = row.querySelector(".post-content-length");
+
+        if (!postTitleElem || !postCreatedByElem || !postContentLengthElem) {
+          console.warn("Missing post element in row:", row);
+          return;
+        }
+
+        const postTitle = postTitleElem.innerText.toLowerCase();
+        const postCreatedBy = postCreatedByElem.innerText.toLowerCase();
+        const postContentLength = parseInt(postContentLengthElem.innerText);
+
+        const matchesTitle = !titleQuery || postTitle.includes(titleQuery);
+        const matchesCreatedBy = !createdByQuery || postCreatedBy.includes(createdByQuery);
+        const matchesContentLength = postContentLength >= minContentLength && postContentLength <= maxContentLength;
+
+        row.style.display = (matchesTitle && matchesCreatedBy && matchesContentLength) ? "table-row" : "none";
+    });
+});
+
+</script>
