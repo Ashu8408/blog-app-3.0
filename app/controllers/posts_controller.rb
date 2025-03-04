@@ -32,6 +32,10 @@ class PostsController < ApplicationController
 
   def show
     @post = Post.find(params[:id])
+
+    unless @post && !@post.is_removed
+      redirect_to posts_path, alert: "Oops! This post doesn't exist or has been removed."
+    end
   end
 
 
@@ -54,7 +58,7 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
     if @post.user_id == current_user.id
       if @post.update(is_removed: true)
-        redirect_to @post, notice: "Poof! Your post just vanished into the void. 🎩✨"
+        redirect_to posts_path, notice: "Poof! Your post just vanished into the void. 🎩✨"
       else
         redirect_to @post, alert: "Oops! Even the internet refused to delete this post."
       end

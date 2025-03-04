@@ -112,5 +112,98 @@ export default class extends Controller {
 
     // listens everytime to update the post list
     document.addEventListener('turbo:load', updatePostList);
+
+    document.addEventListener('turbo:load', function () {
+      const entriesPerPage = 10;
+      let currentPage = 0;
+    
+      function updatePostTable() {
+        const postRows = document.querySelectorAll(".post_row");
+        const totalEntries = postRows.length;
+        const totalPages = Math.ceil(totalEntries / entriesPerPage);
+        const start = currentPage * entriesPerPage;
+        const end = Math.min(start + entriesPerPage, totalEntries);
+    
+        // Show or hide table based on entries
+        document.getElementById("posts_table").classList.toggle("hidden", totalEntries === 0);
+        document.getElementById("page_info").textContent = totalEntries === 0
+          ? "No posts available"
+          : `Showing ${start + 1} to ${end} of ${totalEntries}`;
+    
+        // Display only the current page rows
+        postRows.forEach((row, index) => {
+          row.style.display = index >= start && index < end ? "table-row" : "none";
+        });
+    
+        // Pagination controls visibility
+        document.getElementById("prev_page").classList.toggle("invisible", currentPage === 0);
+        document.getElementById("next_page").classList.toggle("invisible", currentPage >= totalPages - 1);
+    
+        // Generate page numbers
+        const pageNumbersContainer = document.getElementById("page_numbers");
+        pageNumbersContainer.innerHTML = "";
+    
+        for (let i = 0; i < totalPages; i++) {
+          const pageNumber = document.createElement("span");
+          pageNumber.textContent = i + 1;
+          pageNumber.className = `mx-2 cursor-pointer px-3 py-1 rounded ${
+            i === currentPage ? "bg-green-500 text-white font-bold" : "bg-gray-200 text-black"
+          }`;
+          pageNumber.onclick = () => {
+            currentPage = i;
+            updatePostTable();
+          };
+          pageNumbersContainer.appendChild(pageNumber);
+        }
+      }
+    
+      // Event Listeners for Pagination Buttons
+      document.getElementById("prev_page").addEventListener("click", () => {
+        if (currentPage > 0) {
+          currentPage--;
+          updatePostTable();
+        }
+      });
+    
+      document.getElementById("next_page").addEventListener("click", () => {
+        const postRows = document.querySelectorAll(".post_row").length;
+        if ((currentPage + 1) * entriesPerPage < postRows) {
+          currentPage++;
+          updatePostTable();
+        }
+      });
+    
+      // Initial Table Update
+      updatePostTable();
+    });
+
+    // document.getElementById("apply_filters").addEventListener("click", function() {
+    //   const titleQuery = document.getElementById("search_title").value.toLowerCase().trim();
+    //   const createdByQuery = document.getElementById("search_created_by").value.toLowerCase().trim();
+    //   const minContentLength = parseInt(document.getElementById("min_content_length").value) || 0;
+    //   const maxContentLength = parseInt(document.getElementById("max_content_length").value) || Infinity;
+  
+    //   document.querySelectorAll(".post_row").forEach(row => {
+    //     const postTitleElem = row.querySelector(".post-title");
+    //     const postCreatedByElem = row.querySelector(".post-created-by");
+    //     const postContentLengthElem = row.querySelector(".post-content-length");
+
+    //     if (!postTitleElem || !postCreatedByElem || !postContentLengthElem) {
+    //       console.warn("Missing post element in row:", row);
+    //       return;
+    //     }
+
+    //     const postTitle = postTitleElem.innerText.toLowerCase();
+    //     const postCreatedBy = postCreatedByElem.innerText.toLowerCase();
+    //     const postContentLength = parseInt(postContentLengthElem.innerText);
+
+    //     const matchesTitle = !titleQuery || postTitle.includes(titleQuery);
+    //     const matchesCreatedBy = !createdByQuery || postCreatedBy.includes(createdByQuery);
+    //     const matchesContentLength = postContentLength >= minContentLength && postContentLength <= maxContentLength;
+
+    //     row.style.display = (matchesTitle && matchesCreatedBy && matchesContentLength) ? "table-row" : "none";
+    //   });
+    // });
+    
   }
 }

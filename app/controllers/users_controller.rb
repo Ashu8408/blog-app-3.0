@@ -27,21 +27,28 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     @user.contacts.build if @user.contacts.blank?
     @user.addresses.build if @user.addresses.blank?
+  
     if @user.save
       redirect_to @user, notice: 'User was successfully created.'
     else
+      puts @user.errors.full_messages # Debugging
+      flash[:alert] = @user.errors.full_messages.join(", ")
       render :new
     end
   end
-
+  
   def update
     @user = User.find(params[:id])
+  
     if @user.update(user_params)
       redirect_to @user, notice: 'User was successfully updated.'
     else
+      puts @user.errors.full_messages # Debugging
+      flash[:alert] = @user.errors.full_messages.join(", ")
       render :edit
     end
   end
+  
 
   private
 

@@ -2,9 +2,13 @@
     <div class="post-item flex items-center shadow-md rounded-lg p-2 mb-2 gap-5 bg-yellow-50">
         <div class="p-2">
             <div class="flex items-end gap-5 py-2 ">
-            <label id="post_<%= post.id %>_title" class="text-xl text-blue-500 underline font-bold">
-                <%= link_to post.title, post %>
+            <%= link_to post, class: "text-xl text-blue-500 underline font-bold ", data: { turbo: false } do %>
+            <label id="post_<%= post.id %>_title" class="cursor-pointer">
+                <%= post.title %>
             </label>
+            <% end %>
+
+            
             <label class="text-sm text-blue-500">
                 by <%= link_to post.user.email.split('@').first.capitalize if post.user.present? %>
                 <%#= link_to post.user.email.split('@').first.capitalize, user_path(post.user), class: "underline hover:text-blue-700" if post.user.present? %>

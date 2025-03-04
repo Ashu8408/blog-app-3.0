@@ -28,7 +28,7 @@ export default class extends Controller {
             }
         });
 
-        const commentsPerPage = 2;
+        const commentsPerPage = 5;
         let visibleComments = commentsPerPage;
         const showMoreButton = document.getElementById("showMoreComments");
 

@@ -1,58 +1,179 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
+
     validPersonalMobile = false;
-    validOtherContact = false;
-    validAddress = false;
 
     connect() {
-        console.log("Explore Features controller connected!");
+        console.log("Explore New Techs controller connected!");
 
         document.addEventListener("turbo:load", () => {
-            this.setupEventListeners("#phone_forms_container", "add-mobile", "delete-mobile", this.addPhoneNumber.bind(this), this.deletePhoneNumber.bind(this));
-            this.setupEventListeners("#other_forms_container", "add-other-contact", "delete-other-contact", this.addOtherContact.bind(this), this.deleteOtherContact.bind(this));
-            this.setupEventListeners("#address_form_container", "add-address", "delete-address", this.addAddress.bind(this), this.deleteAddress.bind(this));
-        });
+            const phoneFormsContainer = document.getElementById("phone_forms_container");
+            if (!phoneFormsContainer) return;
 
-        this.setupValidation("#phone_forms_container", "mobile", this.validateMobile.bind(this));
-        this.setupValidation("#other_forms_container", "others", this.validateOtherContact.bind(this));
-        this.setupValidation("#address_form_container", "address_line_1", this.validateAddress.bind(this));
-    }
-
-    setupEventListeners(containerSelector, addClass, deleteClass, addFunction, deleteFunction) {
-        const container = document.querySelector(containerSelector);
-        if (!container) return;
-
-        container.addEventListener("click", (event) => {
-            if (event.target.classList.contains(addClass)) {
+            phoneFormsContainer.addEventListener("click", (event) => {
+            if (event.target.classList.contains("add-mobile")) {
                 event.preventDefault();
-                addFunction();
+                this.addPhoneNumber();
             }
 
-            if (event.target.classList.contains(deleteClass)) {
+            if (event.target.classList.contains("delete-mobile")) {
                 event.preventDefault();
-                deleteFunction(event.target);
+                this.deletePhoneNumber(event.target);
             }
+            });
         });
+
+        document.addEventListener("turbo:load", () => {
+            const otherFormsContainer = document.getElementById("other_forms_container");
+            if (!otherFormsContainer) return;
+
+            otherFormsContainer.addEventListener("click", (event) => {
+                if (event.target.classList.contains("add-other-contact")) {
+                    event.preventDefault();
+                    this.addOtherContact();
+                }
+
+                if (event.target.classList.contains("delete-other-contact")) {
+                    event.preventDefault();
+                    this.deleteOtherContact(event.target);
+                }
+            });
+        });
+
+        document.addEventListener("turbo:load", () => {
+            const addressFormsContainer = document.getElementById("address_forms_container");
+            console.log("addressFormsContainer = = = =", addressFormsContainer);
+            if (!addressFormsContainer) return;
+
+            addressFormsContainer.addEventListener("click", (event) => {
+                if (event.target.classList.contains("add-address")) {
+                    event.preventDefault();
+                    this.addAddress();
+                }
+
+                if (event.target.classList.contains("delete-address")) {
+                    event.preventDefault();
+                    this.deleteAddress(event.target);
+                }
+            });
+        });
+        
+        const mobileContainer = this.element.querySelectorAll(".mobile-numbers-section");
+        const othercontactContainer = this.element.querySelectorAll(".other-contact-section");
+        const addressContainer = this.element.querySelectorAll(".address-section");
+
+        mobileContainer.forEach((container, containerIndex) => {
+            console.log("inside mobileContainer = = = =", container);
+            console.log("inside mobileContainerIndex = = = =", containerIndex);
+
+            const mobile = container.querySelectorAll("[id^='user_contact_mobile_input_']");
+            console.log("mobile = = = =", mobile);
+
+            this.element.addEventListener("input", (event) => {
+                const target = event.target;
+
+                if (target.matches("[id^='user_contact_mobile_input_']")) {
+                    console.log("Matched Input:", target);
+                    console.log("Input Value:", target.value);
+            
+                    // Find the closest .mobile if needed
+                    const numberInput = target.closest(".personal-mobile");
+                    console.log("numberInput = = = =", numberInput);
+                    if (numberInput) {
+                        this.validateMobile(target);
+                    }
+                }
+            });
+        });
+
+        othercontactContainer.forEach((othercontainer, othercontactIndex) => {
+            console.log("inside othercontactContainer = = = =", othercontainer);
+            console.log("inside othercontactContainerIndex = = = =", othercontactIndex);
+
+            const othercontact = othercontainer.querySelectorAll("[id^='user_contact_others_input_']");
+            console.log("othercontactInput = = = =", othercontact);
+
+            this.element.addEventListener("input", (event) => {
+                const target = event.target;
+
+                if (target.matches("[id^='user_contact_others_input_']")) {
+                    console.log("Matched Input:", target);
+                    console.log("Input Value:", target.value);
+
+                    // Find the closest .other-contact if needed
+                    const otherInput = target.closest(".other-contact");
+                    if (otherInput) {
+                        // console.log("Other Input:", otherInput);
+                        this.validateOtherContact(target);
+                    }
+                }
+            });
+        });
+
+
+        addressContainer.forEach((container, containerIndex) => {
+            console.log("inside addressContainer = = = =", container);
+            console.log("inside addressContainerIndex = = = =", containerIndex);
+
+            this.element.addEventListener("input", (event) => {
+                const target = event.target;
+
+                if (target.matches("[id^='user_contact_address_input_']")) {
+                    console.log("Matched Address Input:", target);
+                    console.log("Input Value:", target.value);
+
+                    this.validateAddress(target);
+                }
+            });
+        });
+
+        
     }
 
-    setupValidation(containerSelector, inputNamePart, validateFunction) {
-        const container = document.querySelector(containerSelector);
-        if (!container) return;
+    addPhoneNumber() {
+    const phoneFormsContainer = document.getElementById("phone_forms_container");
+    if (!phoneFormsContainer) return;
 
-        container.addEventListener("input", (event) => {
-            if (event.target.matches(`[id^='user_contacts_attributes_'][id$='_${inputNamePart}']`) || 
-                event.target.matches(`[id^='user_addresses_attributes_'][id$='_${inputNamePart}']`)) {
-                validateFunction(event.target);
-            }
-        });
+    const lastFieldSet = phoneFormsContainer.querySelector(".mobile-numbers-section:last-of-type");
+    if (!lastFieldSet) return;
+
+    const newFieldSet = lastFieldSet.cloneNode(true);
+    const newIndex = Date.now();
+
+    newFieldSet.querySelectorAll("input, select, button, div").forEach((input) => {
+        if (input.tagName === "INPUT") input.value = "";
+        if (input.name) input.name = input.name.replace(/\[\d+\]/, `[${newIndex}]`);
+        if (input.id) input.id = input.id.replace(/_\d+/, `_${newIndex}`);
+    });
+
+    newFieldSet.querySelector(".add-mobile").classList.remove("hidden");
+    newFieldSet.querySelector(".delete-mobile").classList.add("hidden");
+
+    phoneFormsContainer.querySelectorAll(".mobile-numbers-section").forEach((section) => {
+        section.querySelector(".add-mobile")?.classList.add("hidden");
+        section.querySelector(".delete-mobile")?.classList.remove("hidden");
+    });
+
+    phoneFormsContainer.appendChild(newFieldSet);
     }
 
-    addField(containerSelector, fieldClass, addButtonClass, deleteButtonClass) {
-        const container = document.querySelector(containerSelector);
-        if (!container) return;
+    deletePhoneNumber(button) {
+    const section = button.closest(".mobile-numbers-section");
+    if (!section) return;
 
-        const lastFieldSet = container.querySelector(`.${fieldClass}:last-of-type`);
+    const destroyField = section.querySelector(".hidden-destroy");
+    if (destroyField) {
+        destroyField.value = "1";
+        section.style.display = "none";
+    }
+    }
+
+    addOtherContact() {
+        const otherFormsContainer = document.getElementById("other_forms_container");
+        if (!otherFormsContainer) return;
+
+        const lastFieldSet = otherFormsContainer.querySelector(".other-contact-section:last-of-type");
         if (!lastFieldSet) return;
 
         const newFieldSet = lastFieldSet.cloneNode(true);
@@ -64,19 +185,19 @@ export default class extends Controller {
             if (input.id) input.id = input.id.replace(/_\d+/, `_${newIndex}`);
         });
 
-        newFieldSet.querySelector(`.${addButtonClass}`).classList.remove("hidden");
-        newFieldSet.querySelector(`.${deleteButtonClass}`).classList.add("hidden");
+        newFieldSet.querySelector(".add-other-contact").classList.remove("hidden");
+        newFieldSet.querySelector(".delete-other-contact").classList.add("hidden");
 
-        container.querySelectorAll(`.${fieldClass}`).forEach((section) => {
-            section.querySelector(`.${addButtonClass}`)?.classList.add("hidden");
-            section.querySelector(`.${deleteButtonClass}`)?.classList.remove("hidden");
+        otherFormsContainer.querySelectorAll(".other-contact-section").forEach((section) => {
+            section.querySelector(".add-other-contact")?.classList.add("hidden");
+            section.querySelector(".delete-other-contact")?.classList.remove("hidden");
         });
 
-        container.appendChild(newFieldSet);
+        otherFormsContainer.appendChild(newFieldSet);
     }
 
-    deleteField(button, fieldClass) {
-        const section = button.closest(`.${fieldClass}`);
+    deleteOtherContact(button) {
+        const section = button.closest(".other-contact-section");
         if (!section) return;
 
         const destroyField = section.querySelector(".hidden-destroy");
@@ -86,47 +207,212 @@ export default class extends Controller {
         }
     }
 
-    // Specific Methods for each form section
-    addPhoneNumber() { this.addField("#phone_forms_container", "mobile-numbers-section", "add-mobile", "delete-mobile"); }
-    deletePhoneNumber(button) { this.deleteField(button, "mobile-numbers-section"); }
+    addAddress() {
+        const addressFormsContainer = document.getElementById("address_forms_container");
+        if (!addressFormsContainer) return;
+    
+        const lastFieldSet = addressFormsContainer.querySelector(".address-section:last-of-type");
+        if (!lastFieldSet) return;
+    
+        const newFieldSet = lastFieldSet.cloneNode(true);
+        const newIndex = Date.now();
+    
+        newFieldSet.querySelectorAll("input, select, button, div").forEach((input) => {
+            if (input.tagName === "INPUT") input.value = "";
+            if (input.name) input.name = input.name.replace(/\[\d+\]/, `[${newIndex}]`);
+            if (input.id) input.id = input.id.replace(/_\d+/, `_${newIndex}`);
+        });
+    
+        newFieldSet.querySelector(".add-address").classList.remove("hidden");
+        newFieldSet.querySelector(".delete-address").classList.add("hidden");
+    
+        addressFormsContainer.querySelectorAll(".address-section").forEach((section) => {
+            section.querySelector(".add-address")?.classList.add("hidden");
+            section.querySelector(".delete-address")?.classList.remove("hidden");
+        });
+    
+        addressFormsContainer.appendChild(newFieldSet);
+    }
 
-    addOtherContact() { this.addField("#other_forms_container", "other-contact-section", "add-other-contact", "delete-other-contact"); }
-    deleteOtherContact(button) { this.deleteField(button, "other-contact-section"); }
-
-    addAddress() { this.addField("#address_form_container", "address-section", "add-address", "delete-address"); }
-    deleteAddress(button) { this.deleteField(button, "address-section"); }
-
-    // Validation Methods
-    validateMobile(element) { this.validateField(element, "mobile", "personal_mobile_label", "personal_mobile_empty_error_", "personal_mobile_length_error_", 10); }
-    validateOtherContact(element) { this.validateField(element, "others", "other_contact_label", "other_contact_empty_error_", "other_contact_length_error_", 5); }
-    validateAddress(element) { this.validateField(element, "address_line_1", "address_label", "address_empty_error_", "address_length_error_", 5); }
-
-    validateField(element, inputName, labelId, errorEmptyIdPrefix, errorLengthIdPrefix, minLength) {
-        const parentDiv = element.closest(`.${inputName.includes("mobile") ? "mobile-numbers-section" : inputName.includes("others") ? "other-contact-section" : "address-section"}`);
-        if (!parentDiv) return;
-
-        const inputField = parentDiv.querySelector(`[id^='user_contacts_attributes_'][id$='_${inputName}'], [id^='user_addresses_attributes_'][id$='_${inputName}']`);
-        const label = document.getElementById(labelId);
-        const errorEmpty = parentDiv.querySelector(`[id^='${errorEmptyIdPrefix}']`);
-        const errorLength = parentDiv.querySelector(`[id^='${errorLengthIdPrefix}']`);
-
-        if (!inputField || inputField.value.trim() === "") {
-            label.classList.add("error_label");
-            errorEmpty.classList.remove("hidden");
-            errorLength.classList.add("hidden");
-        } else if (inputField.value.trim().length < minLength) {
-            label.classList.add("error_label");
-            errorEmpty.classList.add("hidden");
-            errorLength.classList.remove("hidden");
-        } else {
-            label.classList.remove("error_label");
-            errorEmpty.classList.add("hidden");
-            errorLength.classList.add("hidden");
+    deleteAddress(button) {
+        const section = button.closest(".address-section");
+        if (!section) return;
+    
+        const destroyField = section.querySelector(".hidden-destroy");
+        if (destroyField) {
+            destroyField.value = "1";
+            section.style.display = "none";
         }
     }
+    
+
+    validateMobile(element) {
+        // Find the closest '.mobile-numbers-section' container
+        const parentDiv = element.closest(".mobile-numbers-section");
+
+        if (!parentDiv) {
+            console.error("Parent '.mobile-numbers-section' not found.");
+            return false;
+        }
+
+        const personalMobile = parentDiv.querySelector("[id^='user_contact_mobile_input_']");
+        const personalMobileLabel = document.getElementById("personal_mobile_label");
+        const personalMobileError1 = parentDiv.querySelector("[id^='personal_mobile_empty_error_']");
+        const personalMobileError2 = parentDiv.querySelector("[id^='personal_mobile_length_error_']");
+
+        console.log("Personal Mobile Error1:", personalMobileError1);
+        console.log("Personal Mobile Error2:", personalMobileError2);
+
+        console.log("Personal Mobile:", personalMobile.value.trim());
+
+        if (!personalMobile || personalMobile.value.trim() == "") {
+            
+            this.validPersonalMobile = false;
+            console.log("Error: Personal Mobile is empty");
+            personalMobileLabel.classList.add("error_label");
+            personalMobileError1.classList.remove("hidden");
+            personalMobileError2.classList.add("hidden");
+        } else if (personalMobile.value.trim().length < 10) {
+            // Case: Less than 10 digits
+            this.validPersonalMobile = false;
+            console.log("Error: Personal Mobile length is invalid (less than 10 digits)");
+            personalMobileLabel.classList.add("error_label");
+            personalMobileError1.classList.add("hidden");
+            personalMobileError2.classList.remove("hidden");
+        } else {
+            console.log("Personal Mobile is valid");
+            this.validPersonalMobile = true;
+            personalMobileLabel.classList.remove("error_label");
+            personalMobileError1.classList.add("hidden");
+            personalMobileError2.classList.add("hidden");
+        }
+        return this.validPersonalMobile;
+    }
+
+    validateOtherContact(element) {
+        // Find the closest '.other-contact' container
+        const parentDiv = element.closest(".other-contact");
+
+        if (!parentDiv) {
+            console.error("Parent '.other-contact' not found.");
+            return false;
+        }
+
+        const otherContact = parentDiv.querySelector("[id^='user_contact_others_input_']");
+        const otherContactLabel = document.getElementById("other_contact_label");
+        const otherContactError1 = parentDiv.querySelector("[id^='other_contacts_empty_error_']");
+        const otherContactError2 = parentDiv.querySelector("[id^='other_contacts_length_error_']");
+
+        console.log("Other Contact:", otherContact.value.trim());
+
+        console.log("Other Contact Error1:", otherContactError1);
+        console.log("Other Contact Error2:", otherContactError2);
+
+        if (!otherContact || otherContact.value.trim() == "") {
+            this.validOtherContact = false;
+            console.log("Error: Other Contact is empty");
+            otherContactLabel.classList.add("error_label");
+            otherContactError1.classList.remove("hidden");
+            otherContactError2.classList.add("hidden");
+        } else if (otherContact.value.trim().length < 5) {
+            // Case: Less than 10 digits
+            this.validOtherContact = false;
+            console.log("Error: Other Contact length is invalid (less than 10 digits)");
+            otherContactLabel.classList.add("error_label");
+            otherContactError1.classList.add("hidden");
+            otherContactError2.classList.remove("hidden");
+        } else {
+            console.log("Other Contact is valid");
+            this.validOtherContact = true;
+            otherContactLabel.classList.remove("error_label");
+            otherContactError1.classList.add("hidden");
+            otherContactError2.classList.add("hidden");
+        }
+        return this.validOtherContact;
+    }
+
+    validateAddress(element) {
+        // Find the closest '.address-section' container
+        const parentDiv = element.closest(".address-section");
+    
+        if (!parentDiv) {
+            console.error("Parent '.address-section' not found.");
+            return false;
+        }
+    
+        // Get Address Line 1
+        const addressLine1 = parentDiv.querySelector("[id^='user_contact_address_line_1_input_']");
+        const addressLabel = document.getElementById("address_label");
+        const addressError1 = parentDiv.querySelector("[id^='address_line_1_empty_error_']");
+        const addressError2 = parentDiv.querySelector("[id^='address_line_1_length_error_']");
+    
+        // Get Pin Code
+        const pinCode = parentDiv.querySelector("[id^='user_contact_pin_code_input_']");
+        const pinCodeLabel = document.getElementById("pin_code_label");
+        const pinCodeError1 = parentDiv.querySelector("[id^='pin_code_empty_error_']");
+        const pinCodeError2 = parentDiv.querySelector("[id^='pin_code_invalid_error_']");
+    
+        // Get City
+        const city = parentDiv.querySelector("[id^='user_contact_city_input_']");
+        const cityLabel = document.getElementById("city_label");
+        const cityError = parentDiv.querySelector("[id^='city_empty_error_']");
+    
+        let isValid = true;
+    
+        // Validate Address Line 1
+        if (!addressLine1 || addressLine1.value.trim() === "") {
+            console.log("Error: Address Line 1 is empty");
+            isValid = false;
+            addressLabel.classList.add("error_label");
+            addressError1.classList.remove("hidden");
+            addressError2.classList.add("hidden");
+        } else if (addressLine1.value.trim().length < 5) {
+            console.log("Error: Address Line 1 must be at least 5 characters");
+            isValid = false;
+            addressLabel.classList.add("error_label");
+            addressError1.classList.add("hidden");
+            addressError2.classList.remove("hidden");
+        } else {
+            addressLabel.classList.remove("error_label");
+            addressError1.classList.add("hidden");
+            addressError2.classList.add("hidden");
+        }
+    
+        // Validate Pin Code
+        if (!pinCode || pinCode.value.trim() === "") {
+            console.log("Error: Pin Code is empty");
+            isValid = false;
+            pinCodeLabel.classList.add("error_label");
+            pinCodeError1.classList.remove("hidden");
+            pinCodeError2.classList.add("hidden");
+        } else if (!/^\d{6}$/.test(pinCode.value.trim())) {
+            console.log("Error: Pin Code must be exactly 6 digits");
+            isValid = false;
+            pinCodeLabel.classList.add("error_label");
+            pinCodeError1.classList.add("hidden");
+            pinCodeError2.classList.remove("hidden");
+        } else {
+            pinCodeLabel.classList.remove("error_label");
+            pinCodeError1.classList.add("hidden");
+            pinCodeError2.classList.add("hidden");
+        }
+    
+        // Validate City
+        if (!city || city.value.trim() === "") {
+            console.log("Error: City is empty");
+            isValid = false;
+            cityLabel.classList.add("error_label");
+            cityError.classList.remove("hidden");
+        } else {
+            cityLabel.classList.remove("error_label");
+            cityError.classList.add("hidden");
+        }
+    
+        return isValid;
+    }
+    
+    
 }
-
-
 
 
 
