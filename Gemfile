@@ -74,3 +74,8 @@ gem "csv"
 gem "tailwindcss-rails", "~> 3.3"
 
 gem "devise", "~> 4.9"
+
+# gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
+# gem 'caxlsx_rails'
+# 
+
