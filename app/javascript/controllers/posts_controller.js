@@ -177,33 +177,34 @@ export default class extends Controller {
       updatePostTable();
     });
 
-    // document.getElementById("apply_filters").addEventListener("click", function() {
-    //   const titleQuery = document.getElementById("search_title").value.toLowerCase().trim();
-    //   const createdByQuery = document.getElementById("search_created_by").value.toLowerCase().trim();
-    //   const minContentLength = parseInt(document.getElementById("min_content_length").value) || 0;
-    //   const maxContentLength = parseInt(document.getElementById("max_content_length").value) || Infinity;
-  
-    //   document.querySelectorAll(".post_row").forEach(row => {
-    //     const postTitleElem = row.querySelector(".post-title");
-    //     const postCreatedByElem = row.querySelector(".post-created-by");
-    //     const postContentLengthElem = row.querySelector(".post-content-length");
-
-    //     if (!postTitleElem || !postCreatedByElem || !postContentLengthElem) {
-    //       console.warn("Missing post element in row:", row);
-    //       return;
-    //     }
-
-    //     const postTitle = postTitleElem.innerText.toLowerCase();
-    //     const postCreatedBy = postCreatedByElem.innerText.toLowerCase();
-    //     const postContentLength = parseInt(postContentLengthElem.innerText);
-
-    //     const matchesTitle = !titleQuery || postTitle.includes(titleQuery);
-    //     const matchesCreatedBy = !createdByQuery || postCreatedBy.includes(createdByQuery);
-    //     const matchesContentLength = postContentLength >= minContentLength && postContentLength <= maxContentLength;
-
-    //     row.style.display = (matchesTitle && matchesCreatedBy && matchesContentLength) ? "table-row" : "none";
-    //   });
-    // });
+    document.getElementById("apply_filters").addEventListener("click", function() {
+      console.log("Applying filters");
+      const titleQuery = document.getElementById("search_title").value.toLowerCase().trim();
+      const createdByQuery = document.getElementById("search_created_by").value.toLowerCase().trim();
+      const minContentLength = parseInt(document.getElementById("min_content_length").value) || 0;
+      const maxContentLength = parseInt(document.getElementById("max_content_length").value) || Infinity;
+    
+      document.querySelectorAll(".post_row").forEach(row => {
+        const postTitleElem = row.querySelector(".post-title");
+        const postCreatedByElem = row.querySelector(".post-created-by");
+        const postContentLengthElem = row.querySelector(".post-content-length");
+    
+        if (!postTitleElem || !postCreatedByElem || !postContentLengthElem) {
+          console.warn("Missing post element in row:", row);
+          return;
+        }
+    
+        const postTitle = postTitleElem.innerText.toLowerCase();
+        const postCreatedBy = postCreatedByElem.innerText.toLowerCase();
+        const postContentLength = parseInt(postContentLengthElem.innerText);
+    
+        const matchesTitle = !titleQuery || postTitle.includes(titleQuery);
+        const matchesCreatedBy = !createdByQuery || postCreatedBy.includes(createdByQuery);
+        const matchesContentLength = postContentLength >= minContentLength && postContentLength <= maxContentLength;
+    
+        row.style.display = (matchesTitle && matchesCreatedBy && matchesContentLength) ? "table-row" : "none";
+      });
+    });
     
   }
 }

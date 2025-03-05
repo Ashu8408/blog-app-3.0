@@ -24,6 +24,9 @@ Rails.application.routes.draw do
 
   resources :posts do
     resources :comments
+    collection do
+      get :download_excel
+    end
   end
   resources :users
   root "posts#index"

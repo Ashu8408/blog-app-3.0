@@ -43,7 +43,7 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
 
     if @post.update(post_params)
-      redirect_to @post, notice: 'Post was successfully updated.'
+      redirect_to @post, notice: "Post was successfully updated."
     else
       render :edit
     end
@@ -65,6 +65,16 @@ class PostsController < ApplicationController
     else
       redirect_to @post, alert: "Noo my friend... If you didn’t write it, you can’t wipe it!"
     end
+  end
+
+  def download_excel
+    posts = Post.all
+    service = DownloadPostsService.new(posts)
+    package = service.generate_xlsx
+
+    send_data package.to_stream.read,
+              filename: "posts.xlsx",
+              type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
   end
 
   private
