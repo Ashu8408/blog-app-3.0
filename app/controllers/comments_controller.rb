@@ -1,14 +1,37 @@
 class CommentsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_post
 
+
   def index
-    @all_comments = @post.comments.where(is_deleted: false)
+    @all_comments = @post.comments.where(is_deleted: false).order(created_at: :desc)
   end
+
   def create
-    @post = Post.find(params[:post_id])
-    @comment = @post.comments.create(comment_params)
-    redirect_to post_path(@post)
+    @comment = @post.comments.build(comment_params)
+    @comment.user = current_user
+
+    if @comment.save
+      respond_to do |format|
+        format.html { redirect_to @post }
+      end
+    else
+      flash.now[:danger] = "error"
+      render 'posts/show'
+    end
   end
+
+  # def create
+  #   @post = Post.find(params[:post_id])
+  #   @comment = @post.comments.create(comment_params)
+  #   @comment.user_id = current_user.id 
+  #   # redirect_to post_path(@post)
+  #   if @comment.save
+  #     redirect_to @post
+  #   else
+  #     flash.now[:danger] = "error"
+  #   end
+  # end
 
   # def destroy
   #   Rails.logger.info("delete me aaya ")
@@ -23,13 +46,17 @@ class CommentsController < ApplicationController
     @post = Post.find(params[:post_id])
     @comment = @post.comments.find(params[:id])
 
-    if @comment.update(is_deleted: true)
-      redirect_to post_path(@post), notice: "Comment was successfully hidden."
+    if @comment.user_id == current_user.id || @post.user_id == current_user.id
+      if @comment.update(is_deleted: true)
+        redirect_to post_path(@post), notice: "Comment successfully removed. One less opinion in the world!"
+      else
+        redirect_to post_path(@post), alert: "Tried to delete it, but the comment fought back. It won this round."
+      end
     else
-      redirect_to post_path(@post), alert: "Failed to delete comment."
+      redirect_to post_path(@post), alert: "Whoa there, power trip! You can’t erase history that’s not yours."
     end
   end
-  
+
 
   private
 

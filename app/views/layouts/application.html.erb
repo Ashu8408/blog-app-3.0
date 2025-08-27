@@ -2,41 +2,40 @@
 <html>
   <head>
     <title>Blog App 3.0</title>
-    <%= csrf_meta_tags %>
-    <%#= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <%#= csrf_meta_tags %>
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag "application", type: "module", "data-turbo-track": "reload" %>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+
+    <%#= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%#= javascript_include_tag "application", type: "module", "data-turbo-track": "reload" %>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "actiontext", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
 
   </head>
 
-  <body class="bg-gray-100 text-gray-900">
-    
+  <body class="bg-yellow-100 text-gray-900">
+    <div class="text-center">
+      <p class="notice bg-green-400 text-black"><%= notice %></p>
+      <p class="alert bg-red-500 text-white"><%= alert %></p>
+    </div>    
     <!-- Navbar -->
-    <nav class="bg-blue-400 p-4">
-      <div class="container mx-auto flex justify-between items-center">
-        <%= link_to 'Blog app 3.0', root_path, class: "text-white text-xl font-bold" %>
-        <div>
-          <%= link_to "Create New Post", new_post_path, class: "text-white bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded" %>
-        </div>
-      </div>
-    </nav>
+    <%= render partial: "loggedin/navbar" %>
 
     <!-- Hero Section -->
-    <section class="text-black py-16">
-      <div class="container mx-auto text-center">
-        <h1 class="text-4xl font-bold">
-          <%= yield :page_title %>
-        </h1>
-      </div>
-    </section>
+    <%= render partial: "loggedin/hero" %>
+
 
     <!-- Main Content -->
-    <main class="container mx-auto py-8">
+    <%= turbo_frame_tag "turbo-content", class: 'turbo-content-main flow-root px-3 pb-7 border-2 pt-0' do %>
       <%= yield %>
-    </main>
+    <% end %>
 
+  <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
   </body>
 </html>

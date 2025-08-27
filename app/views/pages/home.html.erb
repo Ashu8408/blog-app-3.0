@@ -1,0 +1,32 @@
+<div class="flex items-center justify-center min-h-screen">
+  <div class="max-w-4xl w-full p-8 bg-white rounded-lg shadow-lg text-center">
+    
+    <% if user_signed_in? %>
+      <h2 class="text-4xl font-extrabold text-gray-800 mb-4">Welcome, <%= current_user.email %>! 🎉</h2>
+      <p class="text-lg text-gray-600 mb-6">You are successfully logged in. Explore your options below.</p>
+
+      <div class="flex flex-wrap items-center justify-center gap-6">
+        <%= link_to "Edit Profile", edit_user_registration_path, class: "px-4 py-2 bg-green-600 text-white text-lg font-semibold rounded-lg shadow-md hover:bg-green-700 transition duration-200" %>
+        <%= link_to "Create New Post", new_post_path, class: "px-4 py-2 bg-blue-600 text-white text-lg font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-200" %>
+        <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700", form: { class: "inline" } %>
+      </div>
+
+      <div class="mt-8">
+        <%= link_to "Go to Blogs", posts_path, class: "text-blue-500 text-lg font-semibold hover:underline" %>
+      </div>
+
+    <% else %>
+      <h2 class="text-4xl font-extrabold text-gray-800 mb-4">Welcome to Our Platform 🚀</h2>
+      <p class="text-lg text-gray-600 mb-6">Join our community and start creating amazing content!</p>
+
+      <div class="flex flex-wrap justify-center gap-6">
+        <%= link_to "Sign Up", new_user_registration_path, class: "px-6 py-3 bg-green-600 text-white text-lg font-semibold rounded-lg shadow-md hover:bg-green-700 transition duration-300" %>
+        <%= link_to "Login", new_user_session_path, class: "px-6 py-3 bg-blue-600 text-white text-lg font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-300" %>
+      </div>
+
+      <div class="mt-8">
+        <p class="text-gray-500">Need help? <%= link_to "Contact Support", "#", class: "text-blue-500 font-semibold hover:underline" %></p>
+      </div>
+    <% end %>
+  </div>
+</div>

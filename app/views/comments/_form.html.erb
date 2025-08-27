@@ -1,13 +1,11 @@
 <%= simple_form_for([@post, @post.comments.build]) do |f| %>
-  <%
-=begin%>
- <div class="mb-4">
-    <%= f.input :name, input_html: { class: 'w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500' }, wrapper: false %>
-  </div> 
-<%
-=end%>
-  <div class="mb-4">
-    <%= f.input :comment, input_html: { class: 'w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500' }, wrapper: false %>
+  <div class="gap-2 p-2">
+    <label class="font-bold p-2">Comment:</label>
+    <%#= f.text_area :comment, class: 'w-full bg-white px-2 py-1 border rounded focus:outline-none focus:ring-2', placeholder: "Write a Comment...", required: true %>
+    <%= f.rich_text_area :comment, class: 'w-full bg-white px-2 py-1 border rounded focus:outline-none focus:ring-2', placeholder: "Write a Comment...", required: true %>
+    <div id="comment_error_1" class="hidden text-red-500">Comment cannot be blank</div>
   </div>
-  <%= f.button :submit, 'Leave a reply', class: "bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+  <div class="text-right p-2">
+    <%= f.button :submit, 'Leave a reply', class: "bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+  </div>
 <% end %>

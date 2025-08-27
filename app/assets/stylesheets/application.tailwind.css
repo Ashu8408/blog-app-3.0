@@ -1,3 +1,11 @@
 @tailwind base;
+
 @tailwind components;
+
 @tailwind utilities;
+
+@import "actiontext.css";
+
+@plugin "flowbite-typography";
+
+@plugin "flowbite/plugin";

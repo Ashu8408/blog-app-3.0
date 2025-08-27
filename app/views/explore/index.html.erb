@@ -1,0 +1,96 @@
+<%= turbo_frame_tag "turbo-content" do %>
+  <div data-controller="explore_features">
+    <%= form_with model: @user, url: users_path, method: :post do |f| %>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+        <!-- Personal Mobile Section -->
+        <div id="phone_forms_container" class="col-span-2 md:col-span-1">
+          <%= f.label :mobile, "Personal Mobile # *", id: "personal_mobile_label", class: "block mb-1 font-bold text-sm contacts_label" %>
+
+          <% @user.contacts.each_with_index do |contact, index| %>
+            <%= f.fields_for :contacts, contact do |contact_form| %>
+              <div class="mobile-numbers-section mb-5 whitespace-nowrap">
+                <div class="flex items-center personal-mobile gap-5 space-x-2 mb-2">
+                  <%= contact_form.text_field :mobile, oninput: "this.value = this.value.replace(/[^0-9]/g, '')", pattern: "\\d{10}", maxlength: "10", placeholder: "Enter Mobile Number", id: "user_contact_mobile_input_#{index}", class: "bg-white py-1 border-gray-300 p-2 w-3/4 md:w-1/2" %>
+
+                  <button type="button" class="add-mobile text-blue-500 underline whitespace-nowrap" id="personal_phone_add_another_<%= index %>">Add Another</button>
+                  <button type="button" class="delete-mobile text-red-500 underline hidden" id="personal_phone_delete_<%= index %>">Delete</button>
+                </div>
+
+                <!-- Error Messages -->
+                <div id="personal_mobile_empty_error_<%= index %>" class="text-red-500 hidden mt-1">Mobile number is required</div>
+                <div id="personal_mobile_length_error_<%= index %>" class="text-red-500 hidden mt-1">Mobile number must be 10 digits</div>
+
+                <%= contact_form.hidden_field :_destroy, class: "hidden-destroy" %>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+
+        <!-- Other Contact Section -->
+        <div id="other_forms_container" class="col-span-2 md:col-span-1">
+          <%= f.label :others, "Other Contact *", id: "other_contact_label", class: "block mb-1 font-bold text-sm contacts_label" %>
+
+          <% @user.contacts.each_with_index do |contact, index| %>
+            <%= f.fields_for :contacts, contact do |contact_form| %>
+              <div class="other-contact-section mb-5 whitespace-nowrap">
+                <div class="flex items-center other-contact gap-5 space-x-2 mb-2">
+                  <%= contact_form.text_field :others, placeholder: "Enter Other Contact Details", id: "user_contact_others_input_#{index}", class: "bg-white py-1 border-gray-300 p-2 w-3/4 md:w-1/2" %>
+
+                  <button type="button" class="add-other-contact text-blue-500 underline whitespace-nowrap" id="other_contact_add_another_<%= index %>">Add Another</button>
+                  <button type="button" class="delete-other-contact text-red-500 underline hidden" id="other_contact_delete_<%= index %>">Delete</button>
+                </div>
+
+                <!-- Error Messages -->
+                <div id="other_contacts_empty_error_<%= index %>" class="text-red-500 hidden mt-1">Other contact is required</div>
+                <div id="other_contacts_length_error_<%= index %>" class="text-red-500 hidden mt-1">Other contact must be at least 5 characters</div>
+
+
+                <%= contact_form.hidden_field :_destroy, class: "hidden-destroy" %>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+
+        <!-- Address Section -->
+        <div id="address_forms_container" class="col-span-2 md:col-span-1">
+          <%= f.label :address, "Address *", id: "address_label", class: "block mb-1 font-bold text-sm contacts_label" %>
+
+          <% @user.addresses.each_with_index do |address, index| %>
+            <%= f.fields_for :addresses, address do |address_form| %>
+              <div class="address-section mb-5 whitespace-nowrap">
+                <div class="flex flex-col gap-2 mb-2">
+                  <%= address_form.text_field :address_line_1, placeholder: "Address Line 1", id: "address_line_1_input_#{index}", class: "bg-white py-1 border-gray-300 p-2 w-3/4 md:w-1/2" %>
+                  <div id="address_line_1_error_<%= index %>" class="text-red-500 hidden mt-1">Address Line 1 is required</div>
+
+                  <%= address_form.text_field :address_line_2, placeholder: "Address Line 2", id: "address_line_2_input_#{index}", class: "bg-white py-1 border-gray-300 p-2 w-3/4 md:w-1/2" %>
+
+                  <%= address_form.text_field :pin_code, oninput: "this.value = this.value.replace(/[^0-9]/g, '')", placeholder: "Pin Code", id: "pin_code_input_#{index}", class: "bg-white py-1 border-gray-300 p-2 w-3/4 md:w-1/2" %>
+                  <div id="pin_code_error_<%= index %>" class="text-red-500 hidden mt-1">Pin Code is required</div>
+
+                  <%= address_form.text_field :city, placeholder: "City", id: "city_input_#{index}", class: "bg-white py-1 border-gray-300 p-2 w-3/4 md:w-1/2" %>
+                  <div id="city_error_<%= index %>" class="text-red-500 hidden mt-1">City is required</div>
+
+                  <%= address_form.text_field :country, placeholder: "Country", id: "country_input_#{index}", class: "bg-white py-1 border-gray-300 p-2 w-3/4 md:w-1/2" %>
+                  <div id="country_error_<%= index %>" class="text-red-500 hidden mt-1">Country is required</div>
+
+                  <div class="flex gap-5">
+                    <button type="button" class="add-address text-blue-500 underline whitespace-nowrap" id="address_add_another_<%= index %>">Add Another</button>
+                    <button type="button" class="delete-address text-red-500 underline hidden" id="address_delete_<%= index %>">Delete</button>
+                  </div>
+                </div>
+
+                <%= address_form.hidden_field :_destroy, class: "hidden-destroy" %>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+
+      </div>      
+      <!-- Save Button -->
+      <div class="mt-5">
+        <%#= f.submit "Save", class: "bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600" %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

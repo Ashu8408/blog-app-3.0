@@ -1,2 +1,6 @@
-<% content_for :page_title, "Editing #{@post.title}" %>
-<%= render 'form' %>
+<%= turbo_frame_tag "turbo-content" do %>
+    <% content_for :page_title, "Editing #{@post.title}" %>
+    <div class="bg-yellow-50">
+        <%= render 'form' %>
+    </div>
+<% end %>

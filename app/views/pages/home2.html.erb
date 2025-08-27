@@ -1,0 +1,70 @@
+<div>
+<%= link_to "Posts homepage", posts_path %><br><br>
+  <h1 class="font-bold text-4xl">Login Homepage</h1>
+  <!--<p>Find me in app/views/pages/home.html.erb</p>-->
+
+
+<%
+=begin%>
+ <% if current_user %>
+  <% link_to 'Session time out', destroy_user_session_path, model %>
+  <% link_to 'Edit', edit_user %>
+
+<% else %>
+
+<% end %> 
+<%
+=end%>
+
+<%
+=begin%>
+ <br><br>
+<h3>Old way</h3>
+<% if current_user %>
+  <%= link_to 'Sign out', destroy_user_session_path, method: :delete, data: {turbo_method: :delete} %>
+  <%= link_to 'Edit current user registration', edit_user_registration_path %>
+<% else %>
+  <%= link_to 'Sign up', new_user_registration_path %>
+  <%= link_to 'Sign in', new_user_session_path %>
+<% end %> 
+<%
+=end%>
+
+<br><br>
+<h3>User logins</h3>
+<% if user_signed_in? %>
+  <%#= link_to 'Sign out', destroy_user_session_path, method: :delete, data: {turbo_method: :delete} %>
+  <%= button_to 'Sign out', destroy_user_session_path, method: :delete %>
+  <%= link_to 'Edit user registration', edit_user_registration_path %>
+
+<% else !admin_signed_in? %>
+  <%#= link_to 'Sign user out', destroy_user_session_path, method: :delete, data: {turbo_method: :delete} %>
+  <%= link_to 'Sign in', new_user_session_path %>
+  <%= link_to 'Sign up', new_user_registration_path %>
+<% end %>
+
+<%
+=begin%>
+ <% if admin_signed_in? %>
+  <br><br>
+  <h3>Admin logins</h3>
+    <%#= link_to 'Sign admin out', destroy_admin_session_path, method: :delete, data: {turbo_method: :delete} %>
+    <%= button_to 'Sign admin out', destroy_admin_session_path, method: :delete %>
+    <%= link_to 'Edit id/pass', edit_admin_registration_path %>
+<% elsif !user_signed_in? %>
+  <br><br>
+  <h3>Admin logins</h3>
+    <%= link_to 'Sign up', new_admin_registration_path %>
+    <%= link_to 'Sign in', new_admin_session_path %>
+<% end %> 
+<%
+=end%>
+</div>
+
+<div>
+<br><br>
+<h2>Page Links</h2>
+<%= link_to "Home", root_path %>
+<%= link_to "User Login Path", pages_users_path %>
+<%= link_to "Admin Login Path", pages_admin_path %><br><br>
+

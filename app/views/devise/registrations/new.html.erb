@@ -1,0 +1,26 @@
+<div class="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
+  <h2 class="text-2xl font-bold mb-4">Sign Up</h2>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+    <div class="mb-4">
+      <%= f.label :email, class: "block text-gray-700 font-bold mb-2" %>
+      <%= f.email_field :email, class: "w-full p-2 border rounded-md" %>
+    </div>
+
+    <div class="mb-4">
+      <%= f.label :password, class: "block text-gray-700 font-bold mb-2" %>
+      <%= f.password_field :password, class: "w-full p-2 border rounded-md" %>
+    </div>
+
+    <div class="mb-4">
+      <%= f.label :password_confirmation, class: "block text-gray-700 font-bold mb-2" %>
+      <%= f.password_field :password_confirmation, class: "w-full p-2 border rounded-md" %>
+    </div>
+
+    <%= f.submit "Sign Up", class: "w-full bg-green-500 text-white p-2 rounded-md" %>
+  <% end %>
+
+  <p class="mt-4 text-center">
+    Already have an account?
+    <%= link_to "Sign In", new_session_path(resource_name), class: "underline text-blue-500" %>
+  </p>
+</div>
