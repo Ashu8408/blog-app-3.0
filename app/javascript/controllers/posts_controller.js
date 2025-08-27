@@ -177,34 +177,135 @@ export default class extends Controller {
       updatePostTable();
     });
 
-    document.getElementById("apply_filters").addEventListener("click", function() {
+    document.getElementById("apply_filters").addEventListener("click", function () {
       console.log("Applying filters");
+  
       const titleQuery = document.getElementById("search_title").value.toLowerCase().trim();
       const createdByQuery = document.getElementById("search_created_by").value.toLowerCase().trim();
+      
       const minContentLength = parseInt(document.getElementById("min_content_length").value) || 0;
       const maxContentLength = parseInt(document.getElementById("max_content_length").value) || Infinity;
-    
+  
       document.querySelectorAll(".post_row").forEach(row => {
-        const postTitleElem = row.querySelector(".post-title");
-        const postCreatedByElem = row.querySelector(".post-created-by");
-        const postContentLengthElem = row.querySelector(".post-content-length");
-    
-        if (!postTitleElem || !postCreatedByElem || !postContentLengthElem) {
-          console.warn("Missing post element in row:", row);
-          return;
-        }
-    
-        const postTitle = postTitleElem.innerText.toLowerCase();
-        const postCreatedBy = postCreatedByElem.innerText.toLowerCase();
-        const postContentLength = parseInt(postContentLengthElem.innerText);
-    
-        const matchesTitle = !titleQuery || postTitle.includes(titleQuery);
-        const matchesCreatedBy = !createdByQuery || postCreatedBy.includes(createdByQuery);
-        const matchesContentLength = postContentLength >= minContentLength && postContentLength <= maxContentLength;
-    
-        row.style.display = (matchesTitle && matchesCreatedBy && matchesContentLength) ? "table-row" : "none";
+          const postTitleElem = row.querySelector(".post-title");
+          const postCreatedByElem = row.querySelector(".post-created-by");
+          const postContentLengthElem = row.querySelector(".post-content-length");
+  
+          if (!postTitleElem || !postCreatedByElem || !postContentLengthElem) {
+              console.warn("Missing post element in row:", row);
+              return;
+          }
+  
+          const postTitle = postTitleElem.innerText.toLowerCase();
+          const postCreatedBy = postCreatedByElem.innerText.toLowerCase();
+          const postContentLength = parseInt(postContentLengthElem.innerText);
+  
+          const matchesTitle = !titleQuery || postTitle.includes(titleQuery);
+          const matchesCreatedBy = !createdByQuery || postCreatedBy.includes(createdByQuery);
+          const matchesContentLength = postContentLength >= minContentLength && postContentLength <= maxContentLength;
+  
+          row.style.display = (matchesTitle && matchesCreatedBy && matchesContentLength) ? "table-row" : "none";
       });
-    });
+  });
+  
+  // Get slider and input elements
+  const minSlider = document.getElementById("min-range");
+  const maxSlider = document.getElementById("max-range");
+  const minInput = document.getElementById("min_content_length");
+  const maxInput = document.getElementById("max_content_length");
+  const minValueDisplay = document.getElementById("min-value");
+  const maxValueDisplay = document.getElementById("max-value");
+  
+  // Sync sliders with input fields and display values
+  function updateMinSlider() {
+      let minValue = parseInt(minSlider.value);
+      let maxValue = parseInt(maxSlider.value);
+  
+      if (minValue >= maxValue) {
+          minValue = maxValue - 1;
+          minSlider.value = minValue;
+      }
+  
+      minInput.value = minValue;
+      minValueDisplay.textContent = minValue;
+  }
+  
+  function updateMaxSlider() {
+      let minValue = parseInt(minSlider.value);
+      let maxValue = parseInt(maxSlider.value);
+  
+      if (maxValue <= minValue) {
+          maxValue = minValue + 1;
+          maxSlider.value = maxValue;
+      }
+  
+      maxInput.value = maxValue;
+      maxValueDisplay.textContent = maxValue;
+  }
+  
+  // Sync input fields with sliders when manually changed
+  function updateMinInput() {
+      let minValue = parseInt(minInput.value) || 0;
+      let maxValue = parseInt(maxInput.value) || 500;
+  
+      if (minValue >= maxValue) {
+          minValue = maxValue - 1;
+          minInput.value = minValue;
+      }
+  
+      minSlider.value = minValue;
+      minValueDisplay.textContent = minValue;
+  }
+  
+  function updateMaxInput() {
+      let minValue = parseInt(minInput.value) || 0;
+      let maxValue = parseInt(maxInput.value) || 500;
+  
+      if (maxValue <= minValue) {
+          maxValue = minValue + 1;
+          maxInput.value = maxValue;
+      }
+  
+      maxSlider.value = maxValue;
+      maxValueDisplay.textContent = maxValue;
+  }
+  
+  // Add event listeners
+  minSlider.addEventListener("input", updateMinSlider);
+  maxSlider.addEventListener("input", updateMaxSlider);
+  minInput.addEventListener("input", updateMinInput);
+  maxInput.addEventListener("input", updateMaxInput);
+  
+
+
+    // document.getElementById("apply_filters").addEventListener("click", function() {
+    //   console.log("Applying filters");
+    //   const titleQuery = document.getElementById("search_title").value.toLowerCase().trim();
+    //   const createdByQuery = document.getElementById("search_created_by").value.toLowerCase().trim();
+    //   const minContentLength = parseInt(document.getElementById("min_content_length").value) || 0;
+    //   const maxContentLength = parseInt(document.getElementById("max_content_length").value) || Infinity;
+    
+    //   document.querySelectorAll(".post_row").forEach(row => {
+    //     const postTitleElem = row.querySelector(".post-title");
+    //     const postCreatedByElem = row.querySelector(".post-created-by");
+    //     const postContentLengthElem = row.querySelector(".post-content-length");
+    
+    //     if (!postTitleElem || !postCreatedByElem || !postContentLengthElem) {
+    //       console.warn("Missing post element in row:", row);
+    //       return;
+    //     }
+    
+    //     const postTitle = postTitleElem.innerText.toLowerCase();
+    //     const postCreatedBy = postCreatedByElem.innerText.toLowerCase();
+    //     const postContentLength = parseInt(postContentLengthElem.innerText);
+    
+    //     const matchesTitle = !titleQuery || postTitle.includes(titleQuery);
+    //     const matchesCreatedBy = !createdByQuery || postCreatedBy.includes(createdByQuery);
+    //     const matchesContentLength = postContentLength >= minContentLength && postContentLength <= maxContentLength;
+    
+    //     row.style.display = (matchesTitle && matchesCreatedBy && matchesContentLength) ? "table-row" : "none";
+    //   });
+    // });
     
   }
 }

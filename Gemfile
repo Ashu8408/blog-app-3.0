@@ -80,3 +80,10 @@ gem "devise", "~> 4.9"
 # 
 gem "caxlsx"
 
+gem "sidekiq"
+
+gem "wicked_pdf"
+
+gem "wkhtmltopdf-binary"
+
+gem "imgkit"

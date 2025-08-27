@@ -33,10 +33,50 @@
   <div class="p-5">
     <div class="flex justify-between mb-2">
       <%#= link_to "Download as Excel", download_excel_posts_path(format: :xlsx), class: "bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700" %>
-      <%= link_to download_excel_posts_path(format: :xlsx), class: "text-green-500 px-4 py-2 rounded hover:text-green-700 flex items-center gap-2" do %>
-        <svg class="w-8 h-8 text-green-500 hover:text-green-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-          <path fill-rule="evenodd" d="M13 11.15V4a1 1 0 1 0-2 0v7.15L8.78 8.374a1 1 0 1 0-1.56 1.25l4 5a1 1 0 0 0 1.56 0l4-5a1 1 0 1 0-1.56-1.25L13 11.15Z" clip-rule="evenodd"/>
-          <path fill-rule="evenodd" d="M9.657 15.874 7.358 13H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-2.358l-2.3 2.874a3 3 0 0 1-4.685 0ZM17 16a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H17Z" clip-rule="evenodd"/>
+      <!-- download buttonto generate excel file using service file -->
+      <div class="flex items-center p-2 gap-5">
+        <%= link_to download_excel_posts_path(format: :xlsx), class: "text-green-500 rounded hover:text-green-700 flex items-center" do %>
+          <svg class="w-8 h-8 text-green-500 hover:text-green-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" d="M13 11.15V4a1 1 0 1 0-2 0v7.15L8.78 8.374a1 1 0 1 0-1.56 1.25l4 5a1 1 0 0 0 1.56 0l4-5a1 1 0 1 0-1.56-1.25L13 11.15Z" clip-rule="evenodd"/>
+            <path fill-rule="evenodd" d="M9.657 15.874 7.358 13H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-2.358l-2.3 2.874a3 3 0 0 1-4.685 0ZM17 16a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H17Z" clip-rule="evenodd"/>
+          </svg>
+        <% end %>
+        <!-- Blue Button - Axlsx with Pie Chart -->
+        <%= link_to download_pie_chart_path(format: :xlsx), class: "text-blue-500 rounded hover:text-blue-700 flex items-center gap-2" do %>
+          <svg class="w-8 h-8 text-blue-500 hover:text-blue-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+            <path d="M12 2 A10 10 0 0 1 22 12 L12 12 Z" fill="currentColor"/>
+          </svg>
+        <% end %>
+
+        <!-- download button to generate excel file using sidekiq -->
+        <%= link_to "#", id: "download_posts_sidekiq", class: "text-yellow-300 rounded hover:text-yellow-700 flex items-center" do %>
+          <svg class="w-8 h-8 text-yellow-300 hover:text-yellow-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" d="M13 11.15V4a1 1 0 1 0-2 0v7.15L8.78 8.374a1 1 0 1 0-1.56 1.25l4 5a1 1 0 0 0 1.56 0l4-5a1 1 0 1 0-1.56-1.25L13 11.15Z" clip-rule="evenodd"/>
+            <path fill-rule="evenodd" d="M9.657 15.874 7.358 13H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-2.358l-2.3 2.874a3 3 0 0 1-4.685 0ZM17 16a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H17Z" clip-rule="evenodd"/>
+          </svg>
+        <% end %>
+
+        <!-- Yellow Button - Download Picture using js canvas  -->
+        <%= button_tag type: "button", id: "download_posts_image", class: "text-yellow-500 rounded hover:text-yellow-700 flex items-center gap-2" do %>
+          <svg class="w-8 h-8 text-yellow-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M16 18H8l2.5-6 2 4 1.5-2 2 4Zm-1-8.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z"/>
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 3v4a1 1 0 0 1-1 1H5m14-4v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1ZM8 18h8l-2-4-1.5 2-2-4L8 18Zm7-8.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z"/>
+          </svg>
+        <% end %>
+
+        <!-- Red Button - PDF Download using wickedpdf -->
+        <%= link_to download_pdf_posts_path(format: :pdf), class: "text-red-500 rounded hover:text-red-700 flex items-center gap-2" do %>
+          <svg class="w-8 h-8 text-red-500 hover:text-red-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" d="M9 2.221V7H4.221a2 2 0 0 1 .365-.5L8.5 2.586A2 2 0 0 1 9 2.22ZM11 2v5a2 2 0 0 1-2 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2 2 2 0 0 0 2 2h12a2 2 0 0 0 2-2 2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2V4a2 2 0 0 0-2-2h-7Zm-6 9a1 1 0 0 0-1 1v5a1 1 0 1 0 2 0v-1h.5a2.5 2.5 0 0 0 0-5H5Zm1.5 3H6v-1h.5a.5.5 0 0 1 0 1Zm4.5-3a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h1.376A2.626 2.626 0 0 0 15 15.375v-1.75A2.626 2.626 0 0 0 12.375 11H11Zm1 5v-3h.375a.626.626 0 0 1 .625.626v1.748a.625.625 0 0 1-.626.626H12Zm5-5a1 1 0 0 0-1 1v5a1 1 0 1 0 2 0v-1h1a1 1 0 1 0 0-2h-1v-1h1a1 1 0 1 0 0-2h-2Z" clip-rule="evenodd"/>
+          </svg>
+        <% end %>
+      </div>
+
+      <%= link_to download_image_posts_path, class: "text-red-500 px-4 py-2 rounded hover:text-red-700 flex items-center gap-2" do %>
+        <svg class="w-8 h-8 text-red-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+          <path fill="currentColor" d="M16 18H8l2.5-6 2 4 1.5-2 2 4Zm-1-8.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z"/>
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 3v4a1 1 0 0 1-1 1H5m14-4v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1ZM8 18h8l-2-4-1.5 2-2-4L8 18Zm7-8.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z"/>
         </svg>
       <% end %>
 
@@ -47,13 +87,36 @@
         </svg>
       </button>
     </div>
-    <div id="filterSection" class="mb-4 flex flex-wrap gap-4 hidden">
-      <input type="text" id="search_title" placeholder="Search by Title" class="border p-2 rounded w-1/4">
-      <input type="text" id="search_created_by" placeholder="Search by Created By" class="border p-2 rounded w-1/4">
-      <input type="number" id="min_content_length" placeholder="Min Content Length" class="border p-2 rounded w-1/4">
-      <input type="number" id="max_content_length" placeholder="Max Content Length" class="border p-2 rounded w-1/4">
-      <button id="apply_filters" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Apply Filters</button>
+<div id="filterSection" class="mb-4 grid grid-cols-4 gap-4 hidden">
+  <!-- 1st Row: Search & Content Length Inputs -->
+  <input type="text" id="search_title" placeholder="Search by Title" class="border p-2 rounded text-center">
+  <input type="text" id="search_created_by" placeholder="Search by Created By" class="border p-2 rounded text-center">
+  <input type="number" id="min_content_length" placeholder="Min Content Length" class="border p-2 rounded text-center">
+  <input type="number" id="max_content_length" placeholder="Max Content Length" class="border p-2 rounded text-center">
+  <div class="col-span-3 w-1/2 justify-center items-end">
+    <label class="block mb-2 text-sm font-medium text-gray-900">Content Length Range</label>
+    <div class="relative w-full flex items-center space-x-2">
+      <!-- Min Range Slider -->
+      <input id="min-range" type="range" min="0" max="500" value="0"
+        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
+      <!-- Max Range Slider -->
+      <input id="max-range" type="range" min="0" max="500" value="500"
+        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700">
     </div>
+    <div class="flex justify-between text-sm text-gray-700 mt-2">
+      <span>Min: <span id="min-value">0</span></span>
+      <span>Max: <span id="max-value">500</span></span>
+    </div>
+  </div>
+  <div class="col-span-1 flex justify-center items-center">
+    <button id="apply_filters" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
+      Apply Filters
+    </button>
+  </div>
+</div>
+
+
+
     <table id="posts_table" class="min-w-full border border-gray-300 bg-white shadow-lg">
       <thead>
         <tr class="bg-gray-200">
@@ -97,11 +160,35 @@
     </div>
     <div id="page_numbers" class="flex justify-center mt-2"></div>
   </div>
+  <div id="posts_container_image" class=" p-4 bg-white border rounded shadow">
+  <h2 class="text-lg font-bold mb-4">Posts</h2>
+  <table class="w-full border-collapse border border-gray-300">
+    <thead>
+      <tr class="bg-gray-200">
+        <th class="border p-2">ID</th>
+        <th class="border p-2">Title</th>
+        <th class="border p-2">Content Length</th>
+        <th class="border p-2">Comments Count</th>
+        <th class="border p-2">Created By</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @posts.each do |post| %>
+        <tr>
+          <td class="border p-2"><%= post.id %></td>
+          <td class="border p-2"><%= post.title %></td>
+          <td class="border p-2"><%= post.content.length %></td>
+          <td class="border p-2"><%= post.comments.count %></td>
+          <td class="border p-2"><%= post.user&.email || "N/A" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 <% end %>
-
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener('turbo:load', function () {
   const toggleButton = document.getElementById("toggleFilter");
   const filterSection = document.getElementById("filterSection");
 
@@ -110,4 +197,31 @@
   });
 });
 
+// sidekiq - button click to start POST
+document.getElementById("download_posts_sidekiq").addEventListener("click", function(event) {
+  event.preventDefault();
+  
+  fetch("<%= export_posts_path %>", { method: "POST", headers: { "X-CSRF-Token": "<%= form_authenticity_token %>" } })
+    .then(response => response.json())
+    .then(data => {
+      if (data.download_url) {
+        setTimeout(() => { 
+          window.location.href = data.download_url; 
+        }, 2000); // Wait 2 seconds for Sidekiq to finish
+      }
+    });
+  });
+
+  // script to generate image using canvas in js
+  document.getElementById("download_posts_image").addEventListener("click", function () {
+    let postsContainer = document.getElementById("posts_container_image");
+
+    html2canvas(postsContainer, { scale: 2 }).then(canvas => {
+      let link = document.createElement("a");
+      let timestamp = Math.floor(Date.now() / 1000);
+      link.href = canvas.toDataURL("image/png");
+      link.download = `posts_image_${timestamp}.png`;
+      link.click();
+    });
+  });
 </script>
